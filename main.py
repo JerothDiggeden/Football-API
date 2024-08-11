@@ -49,6 +49,8 @@ team_name = response_team_stats['response']['team']['name']
 coach = response_coaches['response'][0]['name']
 coach_photo = response_coaches['response'][0]['photo']
 players = {}
+players_lst = []
+photo_lst = []
 
 for id in response_test['response']:
 	if team_id in str(id['team']['id']):
@@ -68,13 +70,18 @@ for player in response_players['response']:
 				name = player['player']['name']
 				ic(name, photo)
 				players[name] = photo
+				players_lst.append(name)
+				photo_lst.append(photo)
 				continue
 			else:
 				ic("FAIL")
 
 ic(players)
-players_lst = list(players.keys())
-photo_lst = list(players.values())
+sorted(players)
+players_lst = players.keys()
+players_lst = sorted(players_lst)
+ic(photo_lst)
+ic(players_lst)
 
 url_wikipedia = f"https://en.wikipedia.org/wiki/{venue_name}"
 
@@ -180,24 +187,21 @@ with col7:
 	st.markdown(
 		f"""
 		<div class="custom-container">
-			<h1><img src="{photo_lst[0]}" alt="{players_lst[0]}" style="float:left;width:200px;height:160px">{players_lst[0]}</h1>
-			<p>
-			
-			
-			
-			</p>
+			<h1><img src="{players[players_lst[0]]}" alt="{players_lst[0]}" style="float:left;width:200px;height:160px">{players_lst[0]}</h1>
+			<h1>
+			</h1>
 		</div>
 		""", unsafe_allow_html=True
 	)
-	st.markdown("</div>", unsafe_allow_html=True)
 
 
 with col8:
 	st.markdown(
 		f"""
 		<div class="custom-container">
-			<h2>{players[1]}</h2>
-			<p>This container has a custom background color.</p>
+			<h1><img src="{players[players_lst[1]]}" alt="{players_lst[1]}" style="float:left;width:200px;height:160px">{players_lst[1]}</h1>
+			<h1>
+			</h1>
 		</div>
 		""", unsafe_allow_html=True
 	)
@@ -206,8 +210,9 @@ with col9:
 	st.markdown(
 		f"""
 		<div class="custom-container">
-			<h2>{players[2]}</h2>
-			<p>This container has a custom background color.</p>
+			<h1><img src="{players[players_lst[2]]}" alt="{players_lst[2]}" style="float:left;width:200px;height:160px">{players_lst[2]}</h1>
+			<h1>
+			</h1>
 		</div>
 		""", unsafe_allow_html=True
 	)
@@ -216,8 +221,9 @@ with col10:
 	st.markdown(
 		f"""
 		<div class="custom-container">
-			<h2>{players[3]}</h2>
-			<p>This container has a custom background color.</p>
+			<h1><img src="{players[players_lst[3]]}" alt="{players_lst[3]}" style="float:left;width:200px;height:160px">{players_lst[3]}</h1>
+			<h1>
+			</h1>
 		</div>
 		""", unsafe_allow_html=True
 	)
