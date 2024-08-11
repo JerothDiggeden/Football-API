@@ -14,11 +14,13 @@ fixture_year = '2024'
 url_fixtures = "https://api-football-v1.p.rapidapi.com/v3/fixtures"
 url_team_stats = "https://api-football-v1.p.rapidapi.com/v3/teams/statistics"
 url_coaches = "https://api-football-v1.p.rapidapi.com/v3/coachs"
+url_players = "https://api-football-v1.p.rapidapi.com/v3/players"
 test = "https://api-football-v1.p.rapidapi.com/v3/teams/"
 
 query_fixtures = {"league": "39", "season": fixture_year}
 query_team_stats = {"league": "39", "season": fixture_year, "team": team_id}
 query_coaches = {"team": f"{team_id}"}
+query_players = {"league": "39", "season": fixture_year, "team": f"{team_id}"}
 
 headers = {
 	"x-rapidapi-key": "1b6ce2494dmshf74f9c461b4cdbbp1d3b11jsndd6ab0d8575c",
@@ -37,12 +39,16 @@ response_test = response_test.json()
 response_coaches = requests.get(url_coaches, headers=headers, params=query_coaches)
 response_coaches = response_coaches.json()
 
-ic(response_coaches)
+response_players = requests.get(url_players, headers=headers, params=query_players)
+response_players = response_players.json()
+
+ic(response_players)
 
 logo = response_team_stats['response']['team']['logo']
 team_name = response_team_stats['response']['team']['name']
 coach = response_coaches['response'][0]['name']
 coach_photo = response_coaches['response'][0]['photo']
+players = {}
 
 for id in response_test['response']:
 	if team_id in str(id['team']['id']):
@@ -53,6 +59,22 @@ for id in response_test['response']:
 	if team_id in str(id['team']['id']):
 		venue_name = id['venue']['name']
 		break
+
+for player in response_players['response']:
+	if "player" in player:
+		for image in response_players['response']:
+			if "name" in image['player'] and "photo" in image['player']:
+				photo = player['player']['photo']
+				name = player['player']['name']
+				ic(name, photo)
+				players[name] = photo
+				continue
+			else:
+				ic("FAIL")
+
+ic(players)
+players_lst = list(players.keys())
+photo_lst = list(players.values())
 
 url_wikipedia = f"https://en.wikipedia.org/wiki/{venue_name}"
 
@@ -99,8 +121,9 @@ st.markdown(
 	</style>
 	""", unsafe_allow_html=True
 )
-
+st.header("Club")
 col1, col2, col3 = st.columns([3, 3, 2])
+
 
 # Add content inside the first column
 with col1:
@@ -128,13 +151,12 @@ with col2:
 	st.markdown(
 		f"""
 		<div class="custom-container">
-			<h1>{venue_name}</h1>
-						<p>St James' Park has been the home ground of Newcastle United since 1892 and has been used for football 
+			<h1><img src="{venue_img}" alt="{venue_name}" style="float:left;width:200px;height:160px">{venue_name}</h1>
+			<p>St James' Park has been the home ground of Newcastle United since 1892 and has been used for football 
 			since 1880. Throughout its history, the desire for expansion has caused conflict with local residents 
 			and the local council. This has led to proposals to move at least twice in the late 1960s, and a 
 			controversial 1995 proposed move to nearby Leazes Park. Reluctance to move has led to the distinctive 
 			lop-sided appearance of the present-day stadium's asymmetrical stands.</p>
-				<img src="{venue_img}" alt="{venue_name}"">
 		</div>
 		""", unsafe_allow_html=True
 	)
@@ -146,32 +168,24 @@ with col3:
 			<h1><img src="{coach_photo}" alt="{coach}" style="float:left;">{coach}</h1>
 			<p>Edward John Frank Howe (born 29 November 1977) is an English professional football manager and former 
 			player. He is the manager of Premier League club Newcastle United and could potentially manage the England 
-			national squad.</p><p>A centre-back during his playing career, Howe spent most of his playing career with AFC Bournemouth, coming 
-			up through the youth system and spending eight years with the club, before returning for a second three-year 
-			spell to end his career, and retiring from the professional game in 2007. He entered management the following 
-			year, taking charge of a Bournemouth side facing relegation to the Conference National in January 2009 as the 
-			youngest manager in the Football League.[3] Under his guidance, Bournemouth were able to avoid relegation during 
-			his first season in charge, having started the season on minus 17 points, and were promoted to League One the 
-			following campaign.</p>
+			national squad.</p>
 		</div>
 		""", unsafe_allow_html=True
 	)
 
-
-
-col7, col8, col9, col10 = st.columns([2, 1, 1, 1])
+st.header("Players")
+col7, col8, col9, col10 = st.columns([1, 1, 1, 1])
 
 with col7:
 	st.markdown(
 		f"""
 		<div class="custom-container">
-		<h2>Col7<h2>
-		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore 
-	et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea 
-	commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
-	pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-	Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
-	pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+			<h1><img src="{photo_lst[0]}" alt="{players_lst[0]}" style="float:left;width:200px;height:160px">{players_lst[0]}</h1>
+			<p>
+			
+			
+			
+			</p>
 		</div>
 		""", unsafe_allow_html=True
 	)
@@ -180,9 +194,9 @@ with col7:
 
 with col8:
 	st.markdown(
-		"""
+		f"""
 		<div class="custom-container">
-			<h2>Col8</h2>
+			<h2>{players[1]}</h2>
 			<p>This container has a custom background color.</p>
 		</div>
 		""", unsafe_allow_html=True
@@ -190,9 +204,9 @@ with col8:
 
 with col9:
 	st.markdown(
-		"""
+		f"""
 		<div class="custom-container">
-			<h2>Col9</h2>
+			<h2>{players[2]}</h2>
 			<p>This container has a custom background color.</p>
 		</div>
 		""", unsafe_allow_html=True
@@ -200,13 +214,14 @@ with col9:
 
 with col10:
 	st.markdown(
-		"""
+		f"""
 		<div class="custom-container">
-			<h2>Col10</h2>
+			<h2>{players[3]}</h2>
 			<p>This container has a custom background color.</p>
 		</div>
 		""", unsafe_allow_html=True
 	)
+
 
 
 # if __name__ == "__main__":
