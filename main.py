@@ -6,7 +6,7 @@ import streamlit as st
 st.set_page_config(page_title="NUFC Stats", page_icon=":material/edit:", layout="wide",
 				   initial_sidebar_state="expanded")
 
-team_id = '33'
+team_id = '34'
 fixture_year = '2024'
 
 url_fixtures = "https://api-football-v1.p.rapidapi.com/v3/fixtures"
@@ -16,6 +16,7 @@ test = "https://api-football-v1.p.rapidapi.com/v3/teams/"
 
 query_fixtures = {"league": "39", "season": fixture_year}
 query_team_stats = {"league": "39", "season": fixture_year, "team": team_id}
+query_team_details = {"league": "39", "season": fixture_year, "team": team_id}
 
 headers = {
 	"x-rapidapi-key": "1b6ce2494dmshf74f9c461b4cdbbp1d3b11jsndd6ab0d8575c",
@@ -28,17 +29,12 @@ response_fix = response_fix.json()
 response_team_stats = requests.get(url_team_stats, headers=headers, params=query_team_stats)
 response_team_stats = response_team_stats.json()
 
-response_test = requests.get(test, headers=headers, params=query_fixtures)
+response_test = requests.get(test, headers=headers, params=query_team_details)
 response_test = response_test.json()
 
-
-# ic(response_fix)
-ic(response_test)
-ic(response_team_stats['response'])
-# ic(response_team_stats['response']['venue'])
 logo = response_team_stats['response']['team']['logo']
-venue_img = response_test['response'][0]['venue']['image']
-venue_name = response_test['response'][0]['venue']['name']
+venue_img = response_test['response']['venue']['image']
+venue_name = response_test['response']['venue']['name']
 team_name = response_team_stats['response']['team']['name']
 
 for resp in response_fix['response']:
