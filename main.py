@@ -228,6 +228,206 @@ with col10:
 		""", unsafe_allow_html=True
 	)
 
+col11, col12, col13, col14 = st.columns([1, 1, 1, 1])
+
+with col11:
+	st.markdown(
+		f"""
+		<div class="custom-container">
+			<h1><img src="{players[players_lst[4]]}" alt="{players_lst[4]}" style="float:left;width:200px;height:160px">{players_lst[4]}</h1>
+			<h1>
+			</h1>
+		</div>
+		""", unsafe_allow_html=True
+	)
+
+
+with col12:
+	st.markdown(
+		f"""
+		<div class="custom-container">
+			<h1><img src="{players[players_lst[5]]}" alt="{players_lst[5]}" style="float:left;width:200px;height:160px">{players_lst[5]}</h1>
+			<h1>
+			</h1>
+		</div>
+		""", unsafe_allow_html=True
+	)
+
+with col13:
+	st.markdown(
+		f"""
+		<div class="custom-container">
+			<h1><img src="{players[players_lst[6]]}" alt="{players_lst[6]}" style="float:left;width:200px;height:160px">{players_lst[6]}</h1>
+			<h1>
+			</h1>
+		</div>
+		""", unsafe_allow_html=True
+	)
+
+with col14:
+	st.markdown(
+		f"""
+		<div class="custom-container">
+			<h1><img src="{players[players_lst[7]]}" alt="{players_lst[7]}" style="float:left;width:200px;height:160px">{players_lst[7]}</h1>
+			<h1>
+			</h1>
+		</div>
+		""", unsafe_allow_html=True
+	)
+
+
+col15, col16, col17, col18 = st.columns([1, 1, 1, 1])
+
+with col15:
+	st.markdown(
+		f"""
+		<div class="custom-container">
+			<h1><img src="{players[players_lst[8]]}" alt="{players_lst[8]}" style="float:left;width:200px;height:160px">{players_lst[8]}</h1>
+			<h1>
+			</h1>
+		</div>
+		""", unsafe_allow_html=True
+	)
+
+
+with col16:
+	st.markdown(
+		f"""
+		<div class="custom-container">
+			<h1><img src="{players[players_lst[9]]}" alt="{players_lst[9]}" style="float:left;width:200px;height:160px">{players_lst[9]}</h1>
+			<h1>
+			</h1>
+		</div>
+		""", unsafe_allow_html=True
+	)
+
+with col17:
+	st.markdown(
+		f"""
+		<div class="custom-container">
+			<h1><img src="{players[players_lst[10]]}" alt="{players_lst[10]}" style="float:left;width:200px;height:160px">{players_lst[10]}</h1>
+			<h1>
+			</h1>
+		</div>
+		""", unsafe_allow_html=True
+	)
+
+with col18:
+	st.markdown(
+		f"""
+		<div class="custom-container">
+			<h1><img src="{players[players_lst[11]]}" alt="{players_lst[11]}" style="float:left;width:200px;height:160px">{players_lst[11]}</h1>
+			<h1>
+			</h1>
+		</div>
+		""", unsafe_allow_html=True
+	)
+
+
+col19, col20, col21, col22 = st.columns([1, 1, 1, 1])
+
+with col19:
+	st.markdown(
+		f"""
+		<div class="custom-container">
+			<h1><img src="{players[players_lst[12]]}" alt="{players_lst[12]}" style="float:left;width:200px;height:160px">{players_lst[12]}</h1>
+			<h1>
+			</h1>
+		</div>
+		""", unsafe_allow_html=True
+	)
+
+
+with col20:
+	st.markdown(
+		f"""
+		<div class="custom-container">
+			<h1><img src="{players[players_lst[13]]}" alt="{players_lst[13]}" style="float:left;width:200px;height:160px">{players_lst[13]}</h1>
+			<h1>
+			</h1>
+		</div>
+		""", unsafe_allow_html=True
+	)
+
+with col21:
+	st.markdown(
+		f"""
+		<div class="custom-container">
+			<h1><img src="{players[players_lst[14]]}" alt="{players_lst[15]}" style="float:left;width:200px;height:160px">{players_lst[15]}</h1>
+			<h1>
+			</h1>
+		</div>
+		""", unsafe_allow_html=True
+	)
+
+with col22:
+	st.markdown(
+		f"""
+		<div class="custom-container">
+			<h1><img src="{players[players_lst[16]]}" alt="{players_lst[17]}" style="float:left;width:200px;height:160px">{players_lst[18]}</h1>
+			<h1>
+			</h1>
+		</div>
+		""", unsafe_allow_html=True
+	)
+
+
+col23, col24, col25, col26 = st.columns([1, 1, 1, 1])
+
+with col23:
+	st.markdown(
+		f"""
+		<div class="custom-container">
+			<h1><img src="{players[players_lst[19]]}" alt="{players_lst[19]}" style="float:left;width:200px;height:160px">{players_lst[19]}</h1>
+			<h1>
+			</h1>
+		</div>
+		""", unsafe_allow_html=True
+	)
+
+
+with col24:
+	st.markdown(
+		f"""
+		<div class="custom-container">
+			<h1><img src="{players[players_lst[20]]}" alt="{players_lst[20]}" style="float:left;width:200px;height:160px">{players_lst[20]}</h1>
+			<h1>
+			</h1>
+		</div>
+		""", unsafe_allow_html=True
+	)
+
+with col25:
+	st.markdown(
+		f"""
+		<div class="custom-container">
+			<h1><img src="{players[players_lst[2]]}" alt="{players_lst[2]}" style="float:left;width:200px;height:160px">{players_lst[2]}</h1>
+			<h1>
+			</h1>
+		</div>
+		""", unsafe_allow_html=True
+	)
+
+with col26:
+	st.markdown(
+		f"""
+		<div class="custom-container">
+			<h1><img src="{players[players_lst[3]]}" alt="{players_lst[3]}" style="float:left;width:200px;height:160px">{players_lst[3]}</h1>
+			<h1>
+			</h1>
+		</div>
+		""", unsafe_allow_html=True
+	)
+
+st.markdown(
+	f"""
+	<div class="custom-container">
+		<h1><img src="{players[players_lst[3]]}" alt="{players_lst[3]}" style="float:left;width:200px;height:160px">{players_lst[3]}</h1>
+		<h1>
+		</h1>
+	</div>
+	""", unsafe_allow_html=True
+)
 
 
 # if __name__ == "__main__":
