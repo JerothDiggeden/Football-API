@@ -1,6 +1,7 @@
 import requests
 from icecream import ic
 import streamlit as st
+import selectorlib
 
 
 
@@ -12,10 +13,12 @@ fixture_year = '2024'
 
 url_fixtures = "https://api-football-v1.p.rapidapi.com/v3/fixtures"
 url_team_stats = "https://api-football-v1.p.rapidapi.com/v3/teams/statistics"
+url_coaches = "https://api-football-v1.p.rapidapi.com/v3/coachs"
 test = "https://api-football-v1.p.rapidapi.com/v3/teams/"
 
 query_fixtures = {"league": "39", "season": fixture_year}
 query_team_stats = {"league": "39", "season": fixture_year, "team": team_id}
+query_coaches = {"team": f"{team_id}"}
 
 headers = {
 	"x-rapidapi-key": "1b6ce2494dmshf74f9c461b4cdbbp1d3b11jsndd6ab0d8575c",
@@ -31,8 +34,15 @@ response_team_stats = response_team_stats.json()
 response_test = requests.get(test, headers=headers, params=query_fixtures)
 response_test = response_test.json()
 
+response_coaches = requests.get(url_coaches, headers=headers, params=query_coaches)
+response_coaches = response_coaches.json()
+
+ic(response_coaches)
+
 logo = response_team_stats['response']['team']['logo']
 team_name = response_team_stats['response']['team']['name']
+coach = response_coaches['response'][0]['name']
+coach_photo = response_coaches['response'][0]['photo']
 
 for id in response_test['response']:
 	if team_id in str(id['team']['id']):
@@ -53,6 +63,19 @@ for resp in response_fix['response']:
 				teams = team['teams']
 				date = team['fixture']['date']
 				venue = team['fixture']['venue']
+
+# def scrape(url):
+# 	response_scrape = requests.get(url)
+# 	source = response_scrape.text
+# 	return source
+#
+#
+# source = scrape(url_wikipedia)
+#
+# def extract():
+# 	extractor = selectorlib.Extractor.from_yaml_string(source)
+# 	value = extractor.extract(extractor)
+# 	return value
 
 st.markdown(
 	"""
@@ -118,15 +141,18 @@ with col2:
 
 with col3:
 	st.markdown(
-		"""
+		f"""
 		<div class="custom-container">
-			<h2>Col3</h2>
-			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore 
-	et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea 
-	commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
-	pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est 
-	laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore 
-	et dolore magna aliqua.</p>
+			<h1><img src="{coach_photo}" alt="{coach}" style="float:left;">{coach}</h1>
+			<p>Edward John Frank Howe (born 29 November 1977) is an English professional football manager and former 
+			player. He is the manager of Premier League club Newcastle United and could potentially manage the England 
+			national squad.</p><p>A centre-back during his playing career, Howe spent most of his playing career with AFC Bournemouth, coming 
+			up through the youth system and spending eight years with the club, before returning for a second three-year 
+			spell to end his career, and retiring from the professional game in 2007. He entered management the following 
+			year, taking charge of a Bournemouth side facing relegation to the Conference National in January 2009 as the 
+			youngest manager in the Football League.[3] Under his guidance, Bournemouth were able to avoid relegation during 
+			his first season in charge, having started the season on minus 17 points, and were promoted to League One the 
+			following campaign.</p>
 		</div>
 		""", unsafe_allow_html=True
 	)
@@ -181,3 +207,10 @@ with col10:
 		</div>
 		""", unsafe_allow_html=True
 	)
+
+
+# if __name__ == "__main__":
+# 	scraped = scrape(url_wikipedia)
+# 	extracted = extract()
+# 	ic(extracted)
+
