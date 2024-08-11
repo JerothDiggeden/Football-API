@@ -3,16 +3,16 @@ from icecream import ic
 import streamlit as st
 
 
+
 st.set_page_config(page_title="NUFC Stats", page_icon=":material/edit:", layout="wide",
 				   initial_sidebar_state="expanded")
 
-team_id = '33'
+team_id = '34'
 fixture_year = '2024'
 
 url_fixtures = "https://api-football-v1.p.rapidapi.com/v3/fixtures"
 url_team_stats = "https://api-football-v1.p.rapidapi.com/v3/teams/statistics"
 test = "https://api-football-v1.p.rapidapi.com/v3/teams/"
-
 
 query_fixtures = {"league": "39", "season": fixture_year}
 query_team_stats = {"league": "39", "season": fixture_year, "team": team_id}
@@ -31,15 +31,20 @@ response_team_stats = response_team_stats.json()
 response_test = requests.get(test, headers=headers, params=query_fixtures)
 response_test = response_test.json()
 
-
-# ic(response_fix)
-ic(response_test)
-ic(response_team_stats['response'])
-# ic(response_team_stats['response']['venue'])
 logo = response_team_stats['response']['team']['logo']
-venue_img = response_test['response'][0]['venue']['image']
-venue_name = response_test['response'][0]['venue']['name']
 team_name = response_team_stats['response']['team']['name']
+
+for id in response_test['response']:
+	if team_id in str(id['team']['id']):
+		venue_img = id['venue']['image']
+		break
+
+for id in response_test['response']:
+	if team_id in str(id['team']['id']):
+		venue_name = id['venue']['name']
+		break
+
+url_wikipedia = f"https://en.wikipedia.org/wiki/{venue_name}"
 
 for resp in response_fix['response']:
 	if 'away' in resp['teams']:
