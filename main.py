@@ -6,7 +6,7 @@ import streamlit as st
 st.set_page_config(page_title="NUFC Stats", page_icon=":material/edit:", layout="wide",
                    initial_sidebar_state="expanded")
 
-col1, col2, col3, col4, col5 = st.columns([1, 1, 1, 1, 1])
+col1, col2, col3, col4, col5 = st.columns([3, 1, 1, 1, 1])
 
 url = "https://api-football-v1.p.rapidapi.com/v3/fixtures"
 
@@ -20,15 +20,15 @@ headers = {
 response = requests.get(url, headers=headers, params=querystring)
 response = response.json()
 
-# ic(response)
-#
-# for resp in response['response']:
-# 	if 'away' in resp['teams']:
-# 		for team in response['response']:
-# 			if 'Newcastle' in team['teams']['away']['name']:
-# 				ic(team['teams'], team['fixture']['date'], team['fixture']['venue'])
-# 			if 'Newcastle' in team['teams']['home']['name']:
-# 				ic(team['teams'], team['fixture']['date'], team['fixture']['venue'])
+ic(response)
+
+for resp in response['response']:
+	if 'away' in resp['teams']:
+		for team in response['response']:
+			if 'Newcastle' in team['teams']['away']['name']:
+				teams = team['teams'], team['fixture']['date'], team['fixture']['venue']
+			if 'Newcastle' in team['teams']['home']['name']:
+				venue = team['teams'], team['fixture']['date'], team['fixture']['venue']
 
 st.markdown(
     """
@@ -49,9 +49,6 @@ st.markdown(
     </style>
     """, unsafe_allow_html=True
 )
-
-# Creating columns
-col1, col2, col3, col4, col5 = st.columns(5)
 
 # Add content inside the first column
 with col1:
@@ -93,6 +90,8 @@ with col4:
         </div>
         """, unsafe_allow_html=True
     )
+
+
 
 with col5:
     st.markdown(
