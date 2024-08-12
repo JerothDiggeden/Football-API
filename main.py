@@ -2,6 +2,7 @@ import requests
 from icecream import ic
 import streamlit as st
 import selectorlib
+import matplotlib.pyplot as plt
 
 
 
@@ -15,12 +16,14 @@ url_fixtures = "https://api-football-v1.p.rapidapi.com/v3/fixtures"
 url_team_stats = "https://api-football-v1.p.rapidapi.com/v3/teams/statistics"
 url_coaches = "https://api-football-v1.p.rapidapi.com/v3/coachs"
 url_players = "https://api-football-v1.p.rapidapi.com/v3/players"
+url_standings = "https://api-football-v1.p.rapidapi.com/v3/standings"
 test = "https://api-football-v1.p.rapidapi.com/v3/teams/"
 
 query_fixtures = {"league": "39", "season": fixture_year}
 query_team_stats = {"league": "39", "season": fixture_year, "team": team_id}
 query_coaches = {"team": f"{team_id}"}
 query_players = {"league": "39", "season": fixture_year, "team": f"{team_id}"}
+
 
 headers = {
 	"x-rapidapi-key": "1b6ce2494dmshf74f9c461b4cdbbp1d3b11jsndd6ab0d8575c",
@@ -42,7 +45,23 @@ response_coaches = response_coaches.json()
 response_players = requests.get(url_players, headers=headers, params=query_players)
 response_players = response_players.json()
 
-ic(response_players)
+standings_dict = {}
+
+season = 2009
+for rank in range(15):
+	query_standings = {"season": f"{season}", "team": f"{team_id}"}
+	response_standings = requests.get(url_standings, headers=headers, params=query_standings)
+	response_standings = response_standings.json()
+
+	for league in response_standings['response']:
+		if 'league' in league:
+			for place in response_standings['response']:
+				if 'standings' in place['league']:
+					standings_dict[season] = place['league']['standings'][0][0]['rank']
+					season = season + 1
+
+
+ic(standings_dict)
 
 logo = response_team_stats['response']['team']['logo']
 team_name = response_team_stats['response']['team']['name']
@@ -68,7 +87,6 @@ for player in response_players['response']:
 			if "name" in image['player'] and "photo" in image['player']:
 				photo = player['player']['photo']
 				name = player['player']['name']
-				ic(name, photo)
 				players[name] = photo
 				players_lst.append(name)
 				photo_lst.append(photo)
@@ -76,12 +94,10 @@ for player in response_players['response']:
 			else:
 				ic("FAIL")
 
-ic(players)
+
 sorted(players)
 players_lst = players.keys()
 players_lst = sorted(players_lst)
-ic(photo_lst)
-ic(players_lst)
 
 url_wikipedia = f"https://en.wikipedia.org/wiki/{venue_name}"
 
@@ -448,10 +464,27 @@ with tab2:
         """, unsafe_allow_html=True
 	)
 
+	st.header("Statistics")
+
 	col1, col2, col3 = st.columns([3, 3, 2])
+
+	x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+	years = list(standings_dict.keys())
+	ic(years)
+	labelx = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+
+
+
 
 	with col1:
 		st.write('Col1')
+		plt.plot(x, years)
+		plt.xticks(x, labelx)
+		plt.gca().set_xticklabels(labelx)  # Set the tick labels
+		plt.xlabel('Years')
+		plt.ylabel('Rank')
+		plt.title('Newcastle Standings by Year')
+		plt.show()
 
 	with col2:
 		st.write('Col2')
