@@ -475,8 +475,10 @@ with tab2:
 	years = list(standings_dict.keys())
 	years.pop(16)
 	years.pop(15)
+	years.pop(14)
 	rank.pop(16)
 	rank.pop(15)
+	rank.pop(14)
 	ic(years)
 	ic(rank)
 	labelx = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
@@ -486,10 +488,10 @@ with tab2:
 
 	with col1:
 		st.write('Col1')
-		plt.style.use('grayscale')
+		# plt.style.use('grayscale')
 		plt.plot(years, rank, marker='o')
 		for i in range(len(years)):
-			plt.text(years[i], years[i], str(rank[i]), fontsize=12, ha='right', va='bottom')
+			plt.text(years[i], rank[i], str(rank[i]), fontsize=12, va='bottom', ha='left', wrap=True, color='blue')
 		# plt.xticks(x, labelx)
 		plt.yticks(range(int(min(rank)), int(max(rank)) + 1))
 		# plt.gca().set_xticklabels(labelx)  # Set the tick labels
