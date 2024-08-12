@@ -60,12 +60,12 @@ def stand():
 	response_standings = response_standings.json()
 	return response_standings
 
-def make_dict():
-	global response_standings, season
-	for place in response_standings['response']:
+def make_dict(replaced_stand):
+	global season
+	for place in replaced_stand['response']:
 		if 'Premier League' not in place['league']['name']:
 			ic('RELEGATED')
-			ic(response_standings['parameters']['season'])
+			ic(replaced_stand['parameters']['season'])
 			standings_name = place['league']['name']
 			return standings_name
 			continue
@@ -79,38 +79,53 @@ def make_dict():
 				break
 
 def replace_none_in_json(data, replace_with='N/A'):
-	if isinstance(data, dict):
-		return {k: replace_none_in_json(v, replace_with) for k, v in data.items()}
-	elif isinstance(data, list):
-		return [replace_none_in_json(v, replace_with) for v in data]
-	elif data is None:
-		return replace_with
-	else:
-		return data
+    if isinstance(data, dict):
+        new_dict = {}
+        for k, v in data.items():
+            new_dict[k] = replace_none_in_json(v, replace_with)
+        return new_dict
+    elif isinstance(data, list):
+        new_list = []
+        for v in data:
+            new_list.append(replace_none_in_json(v, replace_with))
+        return new_list
+    elif data is None:
+        return replace_with
+    else:
+        return data
 
-
-for i in range(14):
-	standings_dict_tmp = stand()
-	replace_none_in_json(standings_dict_tmp)
-	make_dict()
 
 # for i in range(14):
-# 	query_standings = {"season": str(season), "team": str(team_id)}
-# 	response_standings = requests.get(url_standings, headers=headers, params=query_standings)
-# 	response_standings = response_standings.json()
-#
-# 	for place in response_standings.get('response', []):
-# 		if 'Premier League' not in response_standings['response'][0]['league']['name']:
-# 			ic('RELEGATED')
-# 			continue
-# 		else:
-# 			league = place.get('league', {})
-# 			standings = league.get('standings', [])
-# 			if 'standings' in league and 'Premier League' in standings[0][0].get('group', ''):
-# 				standings_dict[season] = standings[0][0].get('rank', 'Unknown')
-# 				season += 1
-# 			else:
-# 				break
+# 	returned = stand()
+# 	replaced = replace_none_in_json(returned)
+# 	returned_name = make_dict(replaced)
+# 	if 'UEFA Champions League' in returned_name:
+# 		ic(returned_name)
+# 		break
+season = 2010
+for i in range(14):
+	query_standings = {"season": str(season), "team": str(team_id)}
+	response_standings = requests.get(url_standings, headers=headers, params=query_standings)
+	response_standings = response_standings.json()
+
+	for place in response_standings['response']:
+		if 'Premier League' not in place['league']['name']:
+			ic('RELEGATED')
+			season += 1
+			break
+		else:
+			league = place['league'].get('name', {})
+			ic(league)
+			standings = place.get('league', {})
+			standings = standings.get('standings', [])
+			standings_dict[season] = standings[0][0].get('rank', 'Unknown')
+			season += 1
+		break
+
+data = replace_none_in_json(response_standings, replace_with='N/A')
+
+ic(data)
+
 
 ic(standings_dict)
 
