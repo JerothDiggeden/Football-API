@@ -3,6 +3,8 @@ from icecream import ic
 import streamlit as st
 import selectorlib
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
+
 
 
 
@@ -47,8 +49,8 @@ response_players = response_players.json()
 
 standings_dict = {}
 
-season = 2009
-for rank in range(15):
+season = 2010
+for rank in range(14):
 	query_standings = {"season": f"{season}", "team": f"{team_id}"}
 	response_standings = requests.get(url_standings, headers=headers, params=query_standings)
 	response_standings = response_standings.json()
@@ -443,25 +445,25 @@ with tab1:
 with tab2:
 	st.markdown(
 		"""
-        <style>
-        .custom-container {
-            background-color: white;  /* Set your desired background color */
-            font-family: Arial, Helvetica, sans-serif;
-            h2 {
-                  color: black;
-                }
-            h1 {
-                  color: black;
-                }
-            p {
-                  color: black;
-                }
-            padding: 20px;
-            border-radius: 10px;
-            margin: 10px 0;
-        }
-        </style>
-        """, unsafe_allow_html=True
+		<style>
+		.custom-container {
+			background-color: white;  /* Set your desired background color */
+			font-family: Arial, Helvetica, sans-serif;
+			h2 {
+				  color: black;
+				}
+			h1 {
+				  color: black;
+				}
+			p {
+				  color: black;
+				}
+			padding: 20px;
+			border-radius: 10px;
+			margin: 10px 0;
+		}
+		</style>
+		""", unsafe_allow_html=True
 	)
 
 	st.header("Statistics")
@@ -469,8 +471,14 @@ with tab2:
 	col1, col2, col3 = st.columns([3, 3, 2])
 
 	x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+	rank = list(standings_dict.values())
 	years = list(standings_dict.keys())
+	years.pop(16)
+	years.pop(15)
+	rank.pop(16)
+	rank.pop(15)
 	ic(years)
+	ic(rank)
 	labelx = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
 
 
@@ -478,13 +486,19 @@ with tab2:
 
 	with col1:
 		st.write('Col1')
-		plt.plot(x, years)
-		plt.xticks(x, labelx)
-		plt.gca().set_xticklabels(labelx)  # Set the tick labels
+		plt.style.use('grayscale')
+		plt.plot(years, rank, marker='o')
+		for i in range(len(years)):
+			plt.text(years[i], years[i], str(rank[i]), fontsize=12, ha='right', va='bottom')
+		# plt.xticks(x, labelx)
+		plt.yticks(range(int(min(rank)), int(max(rank)) + 1))
+		# plt.gca().set_xticklabels(labelx)  # Set the tick labels
+		plt.gca().yaxis.set_major_formatter(ticker.FuncFormatter(lambda rank, _: int(rank)))
 		plt.xlabel('Years')
 		plt.ylabel('Rank')
 		plt.title('Newcastle Standings by Year')
-		plt.show()
+		plt.savefig('data/plot.png')
+		st.image('data/plot.png')
 
 	with col2:
 		st.write('Col2')
