@@ -49,19 +49,68 @@ response_players = response_players.json()
 
 standings_dict = {}
 
+
+global response_standings, season
 season = 2010
-for rank in range(14):
-	query_standings = {"season": f"{season}", "team": f"{team_id}"}
+
+def stand():
+	global response_standings, season
+	query_standings = {"season": str(season), "team": str(team_id)}
 	response_standings = requests.get(url_standings, headers=headers, params=query_standings)
 	response_standings = response_standings.json()
+	return response_standings
 
-	for league in response_standings['response']:
-		if 'league' in league:
-			for place in response_standings['response']:
-				if 'standings' in place['league']:
-					standings_dict[season] = place['league']['standings'][0][0]['rank']
-					season = season + 1
+def make_dict():
+	global response_standings, season
+	for place in response_standings['response']:
+		if 'Premier League' not in place['league']['name']:
+			ic('RELEGATED')
+			ic(response_standings['parameters']['season'])
+			standings_name = place['league']['name']
+			return standings_name
+			continue
+		else:
+			league = place.get('league', {})
+			standings = league.get('standings', [])
+			if 'standings' in league and 'Premier League' in standings[0][0].get('group', ''):
+				standings_dict[season] = standings[0][0].get('rank', 'Unknown')
+				season += 1
+			else:
+				break
 
+def replace_none_in_json(data, replace_with='N/A'):
+	if isinstance(data, dict):
+		return {k: replace_none_in_json(v, replace_with) for k, v in data.items()}
+	elif isinstance(data, list):
+		return [replace_none_in_json(v, replace_with) for v in data]
+	elif data is None:
+		return replace_with
+	else:
+		return data
+
+
+for i in range(14):
+	standings_dict_tmp = stand()
+	replace_none_in_json(standings_dict_tmp)
+	make_dict()
+
+# for i in range(14):
+# 	query_standings = {"season": str(season), "team": str(team_id)}
+# 	response_standings = requests.get(url_standings, headers=headers, params=query_standings)
+# 	response_standings = response_standings.json()
+#
+# 	for place in response_standings.get('response', []):
+# 		if 'Premier League' not in response_standings['response'][0]['league']['name']:
+# 			ic('RELEGATED')
+# 			continue
+# 		else:
+# 			league = place.get('league', {})
+# 			standings = league.get('standings', [])
+# 			if 'standings' in league and 'Premier League' in standings[0][0].get('group', ''):
+# 				standings_dict[season] = standings[0][0].get('rank', 'Unknown')
+# 				season += 1
+# 			else:
+# 				break
 
 ic(standings_dict)
 
@@ -69,6 +118,7 @@ logo = response_team_stats['response']['team']['logo']
 team_name = response_team_stats['response']['team']['name']
 coach = response_coaches['response'][0]['name']
 coach_photo = response_coaches['response'][0]['photo']
+
 players = {}
 players_lst = []
 photo_lst = []
@@ -473,12 +523,12 @@ with tab2:
 	x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
 	rank = list(standings_dict.values())
 	years = list(standings_dict.keys())
-	years.pop(16)
 	years.pop(15)
 	years.pop(14)
-	rank.pop(16)
+	years.pop(13)
 	rank.pop(15)
 	rank.pop(14)
+	rank.pop(13)
 	ic(years)
 	ic(rank)
 	labelx = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
