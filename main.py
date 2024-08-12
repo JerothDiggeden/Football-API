@@ -173,6 +173,7 @@ for team in response_fix['response']:
 # 	value = extractor.extract(extractor)
 # 	return value
 
+
 tab1, tab2 = st.tabs(["About", "Stats"])
 
 with tab1:
