@@ -4,6 +4,7 @@ import streamlit as st
 import selectorlib
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
+from PIL import Image, ImageDraw, ImageOps
 
 
 
@@ -78,30 +79,21 @@ def make_dict(replaced_stand):
 			else:
 				break
 
-def replace_none_in_json(data, replace_with='N/A'):
-    if isinstance(data, dict):
-        new_dict = {}
-        for k, v in data.items():
-            new_dict[k] = replace_none_in_json(v, replace_with)
-        return new_dict
-    elif isinstance(data, list):
-        new_list = []
-        for v in data:
-            new_list.append(replace_none_in_json(v, replace_with))
-        return new_list
-    elif data is None:
-        return replace_with
-    else:
-        return data
 
+def add_rounded_corners(image, radius):
+	# Create a mask with the same size as the image, filled with 0 (black)
+	mask = Image.new('L', image.size, 0)
 
-# for i in range(14):
-# 	returned = stand()
-# 	replaced = replace_none_in_json(returned)
-# 	returned_name = make_dict(replaced)
-# 	if 'UEFA Champions League' in returned_name:
-# 		ic(returned_name)
-# 		break
+	# Create a white (255) rounded rectangle on the mask
+	draw = ImageDraw.Draw(mask)
+	draw.rounded_rectangle([(0, 0), image.size], radius=radius, fill=255)
+
+	# Apply the rounded mask to the image
+	rounded_image = ImageOps.fit(image, mask.size, centering=(0.5, 0.5))
+	rounded_image.putalpha(mask)
+
+	return rounded_image
+
 season = 2010
 for i in range(14):
 	query_standings = {"season": str(season), "team": str(team_id)}
@@ -121,11 +113,6 @@ for i in range(14):
 			standings_dict[season] = standings[0][0].get('rank', 'Unknown')
 			season += 1
 		break
-
-data = replace_none_in_json(response_standings, replace_with='N/A')
-
-ic(data)
-
 
 ic(standings_dict)
 
@@ -190,321 +177,321 @@ for resp in response_fix['response']:
 # 	return value
 
 tab1, tab2 = st.tabs(["About", "Stats"])
-
-with tab1:
-
-	st.markdown(
-		"""
-		<style>
-		.custom-container {
-			background-color: white;  /* Set your desired background color */
-			font-family: Arial, Helvetica, sans-serif;
-			h2 {
-				  color: black;
-				}
-			h1 {
-				  color: black;
-				}
-			p {
-				  color: black;
-				}
-			padding: 20px;
-			border-radius: 10px;
-			margin: 10px 0;
-		}
-		</style>
-		""", unsafe_allow_html=True
-	)
-	st.header("Club")
-	col1, col2, col3 = st.columns([3, 3, 2])
-
-
-	# Add content inside the first column
-	with col1:
-		st.markdown(
-			f"""
-			<div class="custom-container">
-				<h1><img src="{logo}" alt="NUFC" style="float:left;">{team_name}</h1>
-				<p>Newcastle United Football Club is a professional association football club based in Newcastle upon Tyne, 
-				Tyne and Wear, England. The club compete in the Premier League, the top tier of English football. Since the 
-				formation of the club in 1892, when Newcastle East End absorbed the assets of Newcastle West End to become 
-				Newcastle United, the club has played its home matches at St James' Park. Located in the centre of Newcastle, 
-				it currently has a capacity of 52,374. The club has been a member of the Premier League for all but three years 
-				of the competition's history, spending 92 seasons in the top flight as of May 2024, and has never dropped below 
-				English football's second tier since joining the Football League in 1893. Newcastle have won four League titles, 
-				six FA Cups and an FA Charity Shield, as well as the 1968–69 Inter-Cities Fairs Cup, the ninth-highest total of 
-				trophies won by an English club.</p>
-			</div>
-			""", unsafe_allow_html=True
-		)
-		st.markdown("</div>", unsafe_allow_html=True)
-
-
-
-	with col2:
-		st.markdown(
-			f"""
-			<div class="custom-container">
-				<h1><img src="{venue_img}" alt="{venue_name}" style="float:left;width:200px;height:160px">{venue_name}</h1>
-				<p>St James' Park has been the home ground of Newcastle United since 1892 and has been used for football 
-				since 1880. Throughout its history, the desire for expansion has caused conflict with local residents 
-				and the local council. This has led to proposals to move at least twice in the late 1960s, and a 
-				controversial 1995 proposed move to nearby Leazes Park. Reluctance to move has led to the distinctive 
-				lop-sided appearance of the present-day stadium's asymmetrical stands.</p>
-			</div>
-			""", unsafe_allow_html=True
-		)
-
-	with col3:
-		st.markdown(
-			f"""
-			<div class="custom-container">
-				<h1><img src="{coach_photo}" alt="{coach}" style="float:left;">{coach}</h1>
-				<p>Edward John Frank Howe (born 29 November 1977) is an English professional football manager and former 
-				player. He is the manager of Premier League club Newcastle United and could potentially manage the England 
-				national squad.</p>
-			</div>
-			""", unsafe_allow_html=True
-		)
-
-	st.header("Players")
-	col7, col8, col9, col10 = st.columns([1, 1, 1, 1])
-
-	with col7:
-		st.markdown(
-			f"""
-			<div class="custom-container">
-				<h1><img src="{players[players_lst[0]]}" alt="{players_lst[0]}" style="float:left;width:200px;height:160px">{players_lst[0]}</h1>
-				<h1>
-				</h1>
-			</div>
-			""", unsafe_allow_html=True
-		)
-
-
-	with col8:
-		st.markdown(
-			f"""
-			<div class="custom-container">
-				<h1><img src="{players[players_lst[1]]}" alt="{players_lst[1]}" style="float:left;width:200px;height:160px">{players_lst[1]}</h1>
-				<h1>
-				</h1>
-			</div>
-			""", unsafe_allow_html=True
-		)
-
-	with col9:
-		st.markdown(
-			f"""
-			<div class="custom-container">
-				<h1><img src="{players[players_lst[2]]}" alt="{players_lst[2]}" style="float:left;width:200px;height:160px">{players_lst[2]}</h1>
-				<h1>
-				</h1>
-			</div>
-			""", unsafe_allow_html=True
-		)
-
-	with col10:
-		st.markdown(
-			f"""
-			<div class="custom-container">
-				<h1><img src="{players[players_lst[3]]}" alt="{players_lst[3]}" style="float:left;width:200px;height:160px">{players_lst[3]}</h1>
-				<h1>
-				</h1>
-			</div>
-			""", unsafe_allow_html=True
-		)
-
-	col11, col12, col13, col14 = st.columns([1, 1, 1, 1])
-
-	with col11:
-		st.markdown(
-			f"""
-			<div class="custom-container">
-				<h1><img src="{players[players_lst[4]]}" alt="{players_lst[4]}" style="float:left;width:200px;height:160px">{players_lst[4]}</h1>
-				<h1>
-				</h1>
-			</div>
-			""", unsafe_allow_html=True
-		)
-
-
-	with col12:
-		st.markdown(
-			f"""
-			<div class="custom-container">
-				<h1><img src="{players[players_lst[5]]}" alt="{players_lst[5]}" style="float:left;width:200px;height:160px">{players_lst[5]}</h1>
-				<h1>
-				</h1>
-			</div>
-			""", unsafe_allow_html=True
-		)
-
-	with col13:
-		st.markdown(
-			f"""
-			<div class="custom-container">
-				<h1><img src="{players[players_lst[6]]}" alt="{players_lst[6]}" style="float:left;width:200px;height:160px">{players_lst[6]}</h1>
-				<h1>
-				</h1>
-			</div>
-			""", unsafe_allow_html=True
-		)
-
-	with col14:
-		st.markdown(
-			f"""
-			<div class="custom-container">
-				<h1><img src="{players[players_lst[7]]}" alt="{players_lst[7]}" style="float:left;width:200px;height:160px">{players_lst[7]}</h1>
-				<h1>
-				</h1>
-			</div>
-			""", unsafe_allow_html=True
-		)
-
-
-	col15, col16, col17, col18 = st.columns([1, 1, 1, 1])
-
-	with col15:
-		st.markdown(
-			f"""
-			<div class="custom-container">
-				<h1><img src="{players[players_lst[8]]}" alt="{players_lst[8]}" style="float:left;width:200px;height:160px">{players_lst[8]}</h1>
-				<h1>
-				</h1>
-			</div>
-			""", unsafe_allow_html=True
-		)
-
-
-	with col16:
-		st.markdown(
-			f"""
-			<div class="custom-container">
-				<h1><img src="{players[players_lst[9]]}" alt="{players_lst[9]}" style="float:left;width:200px;height:160px">{players_lst[9]}</h1>
-				<h1>
-				</h1>
-			</div>
-			""", unsafe_allow_html=True
-		)
-
-	with col17:
-		st.markdown(
-			f"""
-			<div class="custom-container">
-				<h1><img src="{players[players_lst[10]]}" alt="{players_lst[10]}" style="float:left;width:200px;height:160px">{players_lst[10]}</h1>
-				<h1>
-				</h1>
-			</div>
-			""", unsafe_allow_html=True
-		)
-
-	with col18:
-		st.markdown(
-			f"""
-			<div class="custom-container">
-				<h1><img src="{players[players_lst[11]]}" alt="{players_lst[11]}" style="float:left;width:200px;height:160px">{players_lst[11]}</h1>
-				<h1>
-				</h1>
-			</div>
-			""", unsafe_allow_html=True
-		)
-
-
-	col19, col20, col21, col22 = st.columns([1, 1, 1, 1])
-
-	with col19:
-		st.markdown(
-			f"""
-			<div class="custom-container">
-				<h1><img src="{players[players_lst[12]]}" alt="{players_lst[12]}" style="float:left;width:200px;height:160px">{players_lst[12]}</h1>
-				<h1>
-				</h1>
-			</div>
-			""", unsafe_allow_html=True
-		)
-
-
-	with col20:
-		st.markdown(
-			f"""
-			<div class="custom-container">
-				<h1><img src="{players[players_lst[13]]}" alt="{players_lst[13]}" style="float:left;width:200px;height:160px">{players_lst[13]}</h1>
-				<h1>
-				</h1>
-			</div>
-			""", unsafe_allow_html=True
-		)
-
-	with col21:
-		st.markdown(
-			f"""
-			<div class="custom-container">
-				<h1><img src="{players[players_lst[14]]}" alt="{players_lst[14]}" style="float:left;width:200px;height:160px">{players_lst[14]}</h1>
-				<h1>
-				</h1>
-			</div>
-			""", unsafe_allow_html=True
-		)
-
-	with col22:
-		st.markdown(
-			f"""
-			<div class="custom-container">
-				<h1><img src="{players[players_lst[15]]}" alt="{players_lst[15]}" style="float:left;width:200px;height:160px">{players_lst[15]}</h1>
-				<h1>
-				</h1>
-			</div>
-			""", unsafe_allow_html=True
-		)
-
-
-	col23, col24, col25, col26 = st.columns([1, 1, 1, 1])
-
-	with col23:
-		st.markdown(
-			f"""
-			<div class="custom-container">
-				<h1><img src="{players[players_lst[16]]}" alt="{players_lst[16]}" style="float:left;width:200px;height:160px">{players_lst[16]}</h1>
-				<h1>
-				</h1>
-			</div>
-			""", unsafe_allow_html=True
-		)
-
-
-	with col24:
-		st.markdown(
-			f"""
-			<div class="custom-container">
-				<h1><img src="{players[players_lst[17]]}" alt="{players_lst[17]}" style="float:left;width:200px;height:160px">{players_lst[17]}</h1>
-				<h1>
-				</h1>
-			</div>
-			""", unsafe_allow_html=True
-		)
-
-	with col25:
-		st.markdown(
-			f"""
-			<div class="custom-container">
-				<h1><img src="{players[players_lst[18]]}" alt="{players_lst[18]}" style="float:left;width:200px;height:160px">{players_lst[18]}</h1>
-				<h1>
-				</h1>
-			</div>
-			""", unsafe_allow_html=True
-		)
-
-	with col26:
-		st.markdown(
-			f"""
-			<div class="custom-container">
-				<h1><img src="{players[players_lst[19]]}" alt="{players_lst[19]}" style="float:left;width:200px;height:160px">{players_lst[19]}</h1>
-				<h1>
-				</h1>
-			</div>
-			""", unsafe_allow_html=True
-		)
+#
+# with tab1:
+#
+# 	st.markdown(
+# 		"""
+# 		<style>
+# 		.custom-container {
+# 			background-color: white;  /* Set your desired background color */
+# 			font-family: Arial, Helvetica, sans-serif;
+# 			h2 {
+# 				  color: black;
+# 				}
+# 			h1 {
+# 				  color: black;
+# 				}
+# 			p {
+# 				  color: black;
+# 				}
+# 			padding: 20px;
+# 			border-radius: 10px;
+# 			margin: 10px 0;
+# 		}
+# 		</style>
+# 		""", unsafe_allow_html=True
+# 	)
+# 	st.header("Club")
+# 	col1, col2, col3 = st.columns([3, 3, 2])
+#
+#
+# 	# Add content inside the first column
+# 	with col1:
+# 		st.markdown(
+# 			f"""
+# 			<div class="custom-container">
+# 				<h1><img src="{logo}" alt="NUFC" style="float:left;">{team_name}</h1>
+# 				<p>Newcastle United Football Club is a professional association football club based in Newcastle upon Tyne,
+# 				Tyne and Wear, England. The club compete in the Premier League, the top tier of English football. Since the
+# 				formation of the club in 1892, when Newcastle East End absorbed the assets of Newcastle West End to become
+# 				Newcastle United, the club has played its home matches at St James' Park. Located in the centre of Newcastle,
+# 				it currently has a capacity of 52,374. The club has been a member of the Premier League for all but three years
+# 				of the competition's history, spending 92 seasons in the top flight as of May 2024, and has never dropped below
+# 				English football's second tier since joining the Football League in 1893. Newcastle have won four League titles,
+# 				six FA Cups and an FA Charity Shield, as well as the 1968–69 Inter-Cities Fairs Cup, the ninth-highest total of
+# 				trophies won by an English club.</p>
+# 			</div>
+# 			""", unsafe_allow_html=True
+# 		)
+# 		st.markdown("</div>", unsafe_allow_html=True)
+#
+#
+#
+# 	with col2:
+# 		st.markdown(
+# 			f"""
+# 			<div class="custom-container">
+# 				<h1><img src="{venue_img}" alt="{venue_name}" style="float:left;width:200px;height:160px">{venue_name}</h1>
+# 				<p>St James' Park has been the home ground of Newcastle United since 1892 and has been used for football
+# 				since 1880. Throughout its history, the desire for expansion has caused conflict with local residents
+# 				and the local council. This has led to proposals to move at least twice in the late 1960s, and a
+# 				controversial 1995 proposed move to nearby Leazes Park. Reluctance to move has led to the distinctive
+# 				lop-sided appearance of the present-day stadium's asymmetrical stands.</p>
+# 			</div>
+# 			""", unsafe_allow_html=True
+# 		)
+#
+# 	with col3:
+# 		st.markdown(
+# 			f"""
+# 			<div class="custom-container">
+# 				<h1><img src="{coach_photo}" alt="{coach}" style="float:left;">{coach}</h1>
+# 				<p>Edward John Frank Howe (born 29 November 1977) is an English professional football manager and former
+# 				player. He is the manager of Premier League club Newcastle United and could potentially manage the England
+# 				national squad.</p>
+# 			</div>
+# 			""", unsafe_allow_html=True
+# 		)
+#
+# 	st.header("Players")
+# 	col7, col8, col9, col10 = st.columns([1, 1, 1, 1])
+#
+# 	with col7:
+# 		st.markdown(
+# 			f"""
+# 			<div class="custom-container">
+# 				<h1><img src="{players[players_lst[0]]}" alt="{players_lst[0]}" style="float:left;width:200px;height:160px">{players_lst[0]}</h1>
+# 				<h1>
+# 				</h1>
+# 			</div>
+# 			""", unsafe_allow_html=True
+# 		)
+#
+#
+# 	with col8:
+# 		st.markdown(
+# 			f"""
+# 			<div class="custom-container">
+# 				<h1><img src="{players[players_lst[1]]}" alt="{players_lst[1]}" style="float:left;width:200px;height:160px">{players_lst[1]}</h1>
+# 				<h1>
+# 				</h1>
+# 			</div>
+# 			""", unsafe_allow_html=True
+# 		)
+#
+# 	with col9:
+# 		st.markdown(
+# 			f"""
+# 			<div class="custom-container">
+# 				<h1><img src="{players[players_lst[2]]}" alt="{players_lst[2]}" style="float:left;width:200px;height:160px">{players_lst[2]}</h1>
+# 				<h1>
+# 				</h1>
+# 			</div>
+# 			""", unsafe_allow_html=True
+# 		)
+#
+# 	with col10:
+# 		st.markdown(
+# 			f"""
+# 			<div class="custom-container">
+# 				<h1><img src="{players[players_lst[3]]}" alt="{players_lst[3]}" style="float:left;width:200px;height:160px">{players_lst[3]}</h1>
+# 				<h1>
+# 				</h1>
+# 			</div>
+# 			""", unsafe_allow_html=True
+# 		)
+#
+# 	col11, col12, col13, col14 = st.columns([1, 1, 1, 1])
+#
+# 	with col11:
+# 		st.markdown(
+# 			f"""
+# 			<div class="custom-container">
+# 				<h1><img src="{players[players_lst[4]]}" alt="{players_lst[4]}" style="float:left;width:200px;height:160px">{players_lst[4]}</h1>
+# 				<h1>
+# 				</h1>
+# 			</div>
+# 			""", unsafe_allow_html=True
+# 		)
+#
+#
+# 	with col12:
+# 		st.markdown(
+# 			f"""
+# 			<div class="custom-container">
+# 				<h1><img src="{players[players_lst[5]]}" alt="{players_lst[5]}" style="float:left;width:200px;height:160px">{players_lst[5]}</h1>
+# 				<h1>
+# 				</h1>
+# 			</div>
+# 			""", unsafe_allow_html=True
+# 		)
+#
+# 	with col13:
+# 		st.markdown(
+# 			f"""
+# 			<div class="custom-container">
+# 				<h1><img src="{players[players_lst[6]]}" alt="{players_lst[6]}" style="float:left;width:200px;height:160px">{players_lst[6]}</h1>
+# 				<h1>
+# 				</h1>
+# 			</div>
+# 			""", unsafe_allow_html=True
+# 		)
+#
+# 	with col14:
+# 		st.markdown(
+# 			f"""
+# 			<div class="custom-container">
+# 				<h1><img src="{players[players_lst[7]]}" alt="{players_lst[7]}" style="float:left;width:200px;height:160px">{players_lst[7]}</h1>
+# 				<h1>
+# 				</h1>
+# 			</div>
+# 			""", unsafe_allow_html=True
+# 		)
+#
+#
+# 	col15, col16, col17, col18 = st.columns([1, 1, 1, 1])
+#
+# 	with col15:
+# 		st.markdown(
+# 			f"""
+# 			<div class="custom-container">
+# 				<h1><img src="{players[players_lst[8]]}" alt="{players_lst[8]}" style="float:left;width:200px;height:160px">{players_lst[8]}</h1>
+# 				<h1>
+# 				</h1>
+# 			</div>
+# 			""", unsafe_allow_html=True
+# 		)
+#
+#
+# 	with col16:
+# 		st.markdown(
+# 			f"""
+# 			<div class="custom-container">
+# 				<h1><img src="{players[players_lst[9]]}" alt="{players_lst[9]}" style="float:left;width:200px;height:160px">{players_lst[9]}</h1>
+# 				<h1>
+# 				</h1>
+# 			</div>
+# 			""", unsafe_allow_html=True
+# 		)
+#
+# 	with col17:
+# 		st.markdown(
+# 			f"""
+# 			<div class="custom-container">
+# 				<h1><img src="{players[players_lst[10]]}" alt="{players_lst[10]}" style="float:left;width:200px;height:160px">{players_lst[10]}</h1>
+# 				<h1>
+# 				</h1>
+# 			</div>
+# 			""", unsafe_allow_html=True
+# 		)
+#
+# 	with col18:
+# 		st.markdown(
+# 			f"""
+# 			<div class="custom-container">
+# 				<h1><img src="{players[players_lst[11]]}" alt="{players_lst[11]}" style="float:left;width:200px;height:160px">{players_lst[11]}</h1>
+# 				<h1>
+# 				</h1>
+# 			</div>
+# 			""", unsafe_allow_html=True
+# 		)
+#
+#
+# 	col19, col20, col21, col22 = st.columns([1, 1, 1, 1])
+#
+# 	with col19:
+# 		st.markdown(
+# 			f"""
+# 			<div class="custom-container">
+# 				<h1><img src="{players[players_lst[12]]}" alt="{players_lst[12]}" style="float:left;width:200px;height:160px">{players_lst[12]}</h1>
+# 				<h1>
+# 				</h1>
+# 			</div>
+# 			""", unsafe_allow_html=True
+# 		)
+#
+#
+# 	with col20:
+# 		st.markdown(
+# 			f"""
+# 			<div class="custom-container">
+# 				<h1><img src="{players[players_lst[13]]}" alt="{players_lst[13]}" style="float:left;width:200px;height:160px">{players_lst[13]}</h1>
+# 				<h1>
+# 				</h1>
+# 			</div>
+# 			""", unsafe_allow_html=True
+# 		)
+#
+# 	with col21:
+# 		st.markdown(
+# 			f"""
+# 			<div class="custom-container">
+# 				<h1><img src="{players[players_lst[14]]}" alt="{players_lst[14]}" style="float:left;width:200px;height:160px">{players_lst[14]}</h1>
+# 				<h1>
+# 				</h1>
+# 			</div>
+# 			""", unsafe_allow_html=True
+# 		)
+#
+# 	with col22:
+# 		st.markdown(
+# 			f"""
+# 			<div class="custom-container">
+# 				<h1><img src="{players[players_lst[15]]}" alt="{players_lst[15]}" style="float:left;width:200px;height:160px">{players_lst[15]}</h1>
+# 				<h1>
+# 				</h1>
+# 			</div>
+# 			""", unsafe_allow_html=True
+# 		)
+#
+#
+# 	col23, col24, col25, col26 = st.columns([1, 1, 1, 1])
+#
+# 	with col23:
+# 		st.markdown(
+# 			f"""
+# 			<div class="custom-container">
+# 				<h1><img src="{players[players_lst[16]]}" alt="{players_lst[16]}" style="float:left;width:200px;height:160px">{players_lst[16]}</h1>
+# 				<h1>
+# 				</h1>
+# 			</div>
+# 			""", unsafe_allow_html=True
+# 		)
+#
+#
+# 	with col24:
+# 		st.markdown(
+# 			f"""
+# 			<div class="custom-container">
+# 				<h1><img src="{players[players_lst[17]]}" alt="{players_lst[17]}" style="float:left;width:200px;height:160px">{players_lst[17]}</h1>
+# 				<h1>
+# 				</h1>
+# 			</div>
+# 			""", unsafe_allow_html=True
+# 		)
+#
+# 	with col25:
+# 		st.markdown(
+# 			f"""
+# 			<div class="custom-container">
+# 				<h1><img src="{players[players_lst[18]]}" alt="{players_lst[18]}" style="float:left;width:200px;height:160px">{players_lst[18]}</h1>
+# 				<h1>
+# 				</h1>
+# 			</div>
+# 			""", unsafe_allow_html=True
+# 		)
+#
+# 	with col26:
+# 		st.markdown(
+# 			f"""
+# 			<div class="custom-container">
+# 				<h1><img src="{players[players_lst[19]]}" alt="{players_lst[19]}" style="float:left;width:200px;height:160px">{players_lst[19]}</h1>
+# 				<h1>
+# 				</h1>
+# 			</div>
+# 			""", unsafe_allow_html=True
+# 		)
 
 
 with tab2:
@@ -550,24 +537,28 @@ with tab2:
 		plt.plot(years, rank, marker='o')
 		for i in range(len(years)):
 			plt.text(years[i], rank[i], str(rank[i]), fontsize=12, va='bottom', ha='left', wrap=True, color='blue')
-		# plt.xticks(x, labelx)
 		plt.yticks(range(int(min(rank)), int(max(rank)) + 1))
-		# plt.gca().set_xticklabels(labelx)  # Set the tick labels
 		plt.gca().yaxis.set_major_formatter(ticker.FuncFormatter(lambda rank, _: int(rank)))
 		plt.xlabel('Years')
 		plt.ylabel('Rank')
 		plt.title('Newcastle Standings by Year')
 		plt.savefig('data/plot.png')
-		plt_rank_time = st.image('data/plot.png')
-		st.markdown(
-			f"""
-					<div class="custom-container">
-						<h1><img src="{plt_rank_time}" alt="Rank Over Time" style="float:left;width:200px;height:160px">Rank Over Time</h1>
-						<h1>
-						</h1>
-					</div>
-					""", unsafe_allow_html=True
-		)
+		plt_rank_time = 'data/plot.png'
+		image = Image.open(plt_rank_time)
+		# Add rounded corners to the image
+		radius = 20  # Adjust the radius for the corners
+		rounded_image = add_rounded_corners(image, radius)
+		# Display the image with rounded corners using Matplotlib
+		st.image(rounded_image)
+		# st.image(plt_rank_time, use_column_width=True)
+		# st.markdown(
+		# 	f"""
+		# 			<div class="custom-container">
+		# 			<h1>Rank Over Time</h1>
+		# 			<h1><img src="{plt_rank_time}"></h1>
+		# 			</div>
+		# 			""", unsafe_allow_html=True
+		# )
 
 	with col2:
 		st.write('Col2')
