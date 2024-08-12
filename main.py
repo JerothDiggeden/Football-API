@@ -538,12 +538,6 @@ with tab2:
 	x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
 	rank = list(standings_dict.values())
 	years = list(standings_dict.keys())
-	years.pop(15)
-	years.pop(14)
-	years.pop(13)
-	rank.pop(15)
-	rank.pop(14)
-	rank.pop(13)
 	ic(years)
 	ic(rank)
 	labelx = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
@@ -552,7 +546,6 @@ with tab2:
 
 
 	with col1:
-		st.write('Col1')
 		# plt.style.use('grayscale')
 		plt.plot(years, rank, marker='o')
 		for i in range(len(years)):
@@ -565,7 +558,16 @@ with tab2:
 		plt.ylabel('Rank')
 		plt.title('Newcastle Standings by Year')
 		plt.savefig('data/plot.png')
-		st.image('data/plot.png')
+		plt_rank_time = st.image('data/plot.png')
+		st.markdown(
+			f"""
+					<div class="custom-container">
+						<h1><img src="{plt_rank_time}" alt="Rank Over Time" style="float:left;width:200px;height:160px">Rank Over Time</h1>
+						<h1>
+						</h1>
+					</div>
+					""", unsafe_allow_html=True
+		)
 
 	with col2:
 		st.write('Col2')
