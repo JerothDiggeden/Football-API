@@ -13,13 +13,13 @@ from bs4 import BeautifulSoup
 st.set_page_config(page_title="NUFC Web App", page_icon=":material/edit:", layout="wide",
 				   initial_sidebar_state="expanded")
 
-team_id = ['33', '34', '35', '36', '37', '38', '39', '40', '41', '42',
+team_id_lst = ['33', '34', '35', '36', '37', '38', '39', '40', '41', '42',
 		   '43', '44', '45', '46', '47', '48', '49', '50', '51', '52']
 
 st.sidebar.title("EPL Stats")
-st.selectbox('team', team_id)
+select_team = st.selectbox('Team', team_id_lst)
 
-team_id = '34'
+team_id = select_team
 fixture_year = '2024'
 
 url_fixtures = "https://api-football-v1.p.rapidapi.com/v3/fixtures"
@@ -61,8 +61,8 @@ ic(response_players)
 
 tmp_lst = []
 
-for value in response_team_stats['response']:
-	tmp_lst.append(value[1][2])
+for value in response_coaches['response']:
+	tmp_lst.append(value['team']['name'])
 
 ic(tmp_lst)
 
