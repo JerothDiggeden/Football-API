@@ -5,11 +5,12 @@ import selectorlib
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 from PIL import Image, ImageDraw, ImageOps
+from bs4 import BeautifulSoup
 
 
 
 
-st.set_page_config(page_title="NUFC Stats", page_icon=":material/edit:", layout="wide",
+st.set_page_config(page_title="NUFC Web App", page_icon=":material/edit:", layout="wide",
 				   initial_sidebar_state="expanded")
 
 team_id = '34'
@@ -158,6 +159,8 @@ for team in response_fix['response']:
 		date = team['fixture']['date']
 		venue = team['fixture']['venue']
 
+team = response_team_stats['response']['team']['name']
+
 # def scrape(url):
 # 	response_scrape = requests.get(url)
 # 	source = response_scrape.text
@@ -204,19 +207,27 @@ with tab1:
 
 	# Add content inside the first column
 	with col1:
+		url_stadium = f"https://en.wikipedia.org/wiki/St_James%27_Park"
+		url_coach = f""
+		url_team = f""
+
+		# Send a GET request to fetch the page content
+		response_stadium = requests.get(url_stadium)
+
+		# Parse the HTML content using BeautifulSoup
+		soup = BeautifulSoup(response_stadium.content, 'html.parser')
+
+		# Find all paragraph tags within the main content area
+		paragraphs = soup.find_all('p')
+
+		# Filter out only the first two non-empty paragraphs
+		first_two_paragraphs_stadium = [p.get_text() for p in paragraphs if p.get_text().strip()][:2]
+
 		st.markdown(
 			f"""
 			<div class="custom-container">
 				<h1><img src="{logo}" alt="NUFC" style="float:left;">{team_name}</h1>
-				<p>Newcastle United Football Club is a professional association football club based in Newcastle upon Tyne,
-				Tyne and Wear, England. The club compete in the Premier League, the top tier of English football. Since the
-				formation of the club in 1892, when Newcastle East End absorbed the assets of Newcastle West End to become
-				Newcastle United, the club has played its home matches at St James' Park. Located in the centre of Newcastle,
-				it currently has a capacity of 52,374. The club has been a member of the Premier League for all but three years
-				of the competition's history, spending 92 seasons in the top flight as of May 2024, and has never dropped below
-				English football's second tier since joining the Football League in 1893. Newcastle have won four League titles,
-				six FA Cups and an FA Charity Shield, as well as the 1968–69 Inter-Cities Fairs Cup, the ninth-highest total of
-				trophies won by an English club.</p>
+				<p>{first_two_paragraphs_stadium}</p>
 			</div>
 			""", unsafe_allow_html=True
 		)
@@ -536,7 +547,7 @@ with tab2:
 		# plt.gca().yaxis.set_major_formatter(ticker.FuncFormatter(lambda rank, _: int(rank)))
 		plt.xlabel('Years')
 		plt.ylabel('Rank')
-		plt.title('Newcastle Standings by Year')
+		plt.title(f'{team} Standings by Year')
 		plt.savefig('data/plot.png')
 		plt_rank_time = 'data/plot.png'
 		image = Image.open(plt_rank_time)
@@ -558,6 +569,7 @@ with tab2:
 		results_away = []
 		legend_home = ['Win', 'Draw', 'Lose']
 		legend_away = ['Win', 'Draw', 'Lose']
+		standings_lst = list(standings_dict.keys())
 
 		for v in response_standings['response']:
 			if 'Premier League' in v['league']['name']:
@@ -580,7 +592,7 @@ with tab2:
 		plt.legend(legend_home, loc='best')
 		plt.xlabel('')
 		plt.ylabel('')
-		plt.title('Newcastle Home Results')
+		plt.title(f'{team} Home Results {standings_lst[0]} - {standings_lst[len(standings_lst) - 1]}')
 		plt.savefig('data/plot_home_results.png')
 		plt_home_time = 'data/plot_home_results.png'
 		image = Image.open(plt_home_time)
@@ -612,7 +624,7 @@ with tab2:
 
 		plt.pie(results_away, textprops={'color': 'white', 'fontsize': 14}, autopct='%1.1f%%', startangle=140, colors=colours)
 		plt.legend(legend_away, loc='best')
-		plt.title('Newcastle Away Results')
+		plt.title(f'{team} Away Results {standings_lst[0]} - {standings_lst[len(standings_lst) - 1]}')
 		plt.savefig('data/plot_away_results.png')
 		plt_away_time = 'data/plot_away_results.png'
 		image = Image.open(plt_away_time)
