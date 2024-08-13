@@ -160,6 +160,9 @@ for team in response_fix['response']:
 
 team = response_team_stats['response']['team']['name']
 
+if 'Newcastle' in team_name:
+	team_name = team_name + " " + 'United'
+
 # def scrape(url):
 # 	response_scrape = requests.get(url)
 # 	source = response_scrape.text
@@ -210,7 +213,7 @@ with tab1:
 		ic(coach_full_name)
 		url_stadium = f"https://en.wikipedia.org/wiki/{venue_name}"
 		url_coach = f"https://en.wikipedia.org/wiki/{coach_full_name}"
-		url_team = f"https://en.wikipedia.org/wiki/{team_name} United"
+		url_team = f"https://en.wikipedia.org/wiki/{team_name}"
 
 
 		# Send a GET request to fetch the page content
@@ -238,7 +241,6 @@ with tab1:
 
 		first_two_paragraphs_team = [p.get_text() for p in paragraphs_team if p.get_text().strip()][:2]
 		par_1_team = first_two_paragraphs_team[0]
-		par_2_team = first_two_paragraphs_team[1]
 		# for v in first_two_paragraphs_stadium:
 		# 	if '\n' in v:
 		# 		v.replace('\n', '')
