@@ -523,30 +523,27 @@ with tab2:
 	x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
 	rank = list(standings_dict.values())
 	years = list(standings_dict.keys())
-	ic(years)
-	ic(rank)
+	colours = ['#000000', '#3d3d3d', '#8a8a8a']
 	labelx = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
 
 
 
 
 	with col1:
-		# plt.style.use('grayscale')
+		plt.style.use('grayscale')
 		plt.plot(years, rank, marker='o')
 		for i in range(len(years)):
-			plt.text(years[i], rank[i], str(rank[i]), fontsize=12, va='bottom', ha='left', wrap=True, color='blue')
+			plt.text(years[i], rank[i], str(rank[i]), fontsize=12, va='bottom', ha='left', wrap=True, color='red')
 		plt.yticks(range(int(min(rank)), int(max(rank)) + 1))
-		plt.gca().yaxis.set_major_formatter(ticker.FuncFormatter(lambda rank, _: int(rank)))
+		# plt.gca().yaxis.set_major_formatter(ticker.FuncFormatter(lambda rank, _: int(rank)))
 		plt.xlabel('Years')
 		plt.ylabel('Rank')
 		plt.title('Newcastle Standings by Year')
 		plt.savefig('data/plot.png')
 		plt_rank_time = 'data/plot.png'
 		image = Image.open(plt_rank_time)
-		# Add rounded corners to the image
-		radius = 20  # Adjust the radius for the corners
+		radius = 20
 		rounded_image = add_rounded_corners(image, radius)
-		# Display the image with rounded corners using Matplotlib
 		st.image(rounded_image)
 
 	with col2:
@@ -560,6 +557,8 @@ with tab2:
 		away_lose = []
 		results_home = []
 		results_away = []
+		legend_home = ['Win', 'Draw', 'Lose']
+		legend_away = ['Win', 'Draw', 'Lose']
 
 		for v in response_standings['response']:
 			if 'Premier League' in v['league']['name']:
@@ -578,8 +577,10 @@ with tab2:
 		results_home.append(hme_draw_perc)
 		results_home.append(hme_lose_perc)
 
-		plt.pie(results_home, autopct='%1.1f%%')
-		plt.legend(loc='best')
+		plt.pie(results_home, textprops={'color': 'white', 'fontsize': 14}, autopct='%1.1f%%', startangle=140, colors=colours)
+		plt.legend(legend_home, loc='best')
+		plt.xlabel('')
+		plt.ylabel('')
 		plt.title('Newcastle Home Results')
 		plt.savefig('data/plot_home_results.png')
 		plt_home_time = 'data/plot_home_results.png'
@@ -609,8 +610,8 @@ with tab2:
 		results_away.append(away_draw_perc)
 		results_away.append(away_lose_perc)
 
-		plt.pie(results_away, autopct='%1.1f%%')
-		plt.legend(loc='best')
+		plt.pie(results_away, textprops={'color': 'white', 'fontsize': 14}, autopct='%1.1f%%', startangle=140, colors=colours)
+		plt.legend(legend_away, loc='best')
 		plt.title('Newcastle Away Results')
 		plt.savefig('data/plot_away_results.png')
 		plt_away_time = 'data/plot_away_results.png'
