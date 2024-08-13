@@ -13,6 +13,12 @@ from bs4 import BeautifulSoup
 st.set_page_config(page_title="NUFC Web App", page_icon=":material/edit:", layout="wide",
 				   initial_sidebar_state="expanded")
 
+team_id = ['33', '34', '35', '36', '37', '38', '39', '40', '41', '42',
+		   '43', '44', '45', '46', '47', '48', '49', '50', '51', '52']
+
+st.sidebar.title("EPL Stats")
+st.selectbox('team', team_id)
+
 team_id = '34'
 fixture_year = '2024'
 
@@ -50,6 +56,15 @@ response_players = requests.get(url_players, headers=headers, params=query_playe
 response_players = response_players.json()
 
 standings_dict = {}
+
+ic(response_players)
+
+tmp_lst = []
+
+for value in response_team_stats['response']:
+	tmp_lst.append(value[1][2])
+
+ic(tmp_lst)
 
 
 global response_standings, season
@@ -163,20 +178,6 @@ team = response_team_stats['response']['team']['name']
 if 'Newcastle' in team_name:
 	team_name = team_name + " " + 'United'
 
-# def scrape(url):
-# 	response_scrape = requests.get(url)
-# 	source = response_scrape.text
-# 	return source
-#
-#
-# source = scrape(url_wikipedia)
-#
-# def extract():
-# 	extractor = selectorlib.Extractor.from_yaml_string(source)
-# 	value = extractor.extract(extractor)
-# 	return value
-
-
 tab1, tab2 = st.tabs(["About", "Stats"])
 
 with tab1:
@@ -241,13 +242,6 @@ with tab1:
 
 		first_two_paragraphs_team = [p.get_text() for p in paragraphs_team if p.get_text().strip()][:2]
 		par_1_team = first_two_paragraphs_team[0]
-		# for v in first_two_paragraphs_stadium:
-		# 	if '\n' in v:
-		# 		v.replace('\n', '')
-		# first_two_paragraphs_stadium[0].replace('[', ' ')
-		# first_two_paragraphs_stadium[0].replace('"', ' ')
-		# first_two_paragraphs_stadium[len(first_two_paragraphs_stadium) - 1].replace('"', ' ')
-		# first_two_paragraphs_stadium[len(first_two_paragraphs_stadium) - 1].replace(']', ' ')
 
 		st.markdown(
 			f"""
@@ -558,7 +552,10 @@ with tab2:
 
 
 	with col1:
-		plt.style.use('grayscale')
+		try:
+			plt.style.use('grayscale')
+		except KeyError:
+			ic('Key Error')
 		plt.plot(years, rank, marker='o')
 		for i in range(len(years)):
 			plt.text(years[i], rank[i], str(rank[i]), fontsize=12, va='bottom', ha='left', wrap=True, color='red')
@@ -577,7 +574,10 @@ with tab2:
 
 	with col2:
 
-		plt.style.use('grayscale')
+		try:
+			plt.style.use('grayscale')
+		except KeyError:
+			ic('Key Error')
 		home_win = []
 		home_draw = []
 		home_lose = []
@@ -623,7 +623,10 @@ with tab2:
 		plt.close()
 
 	with col3:
-		plt.style.use('grayscale')
+		try:
+			plt.style.use('grayscale')
+		except KeyError:
+			ic('Key Error')
 		for v in response_standings['response']:
 			if 'Premier League' in v['league']['name']:
 				for a in response_standings['response']:
@@ -647,14 +650,7 @@ with tab2:
 		plt.savefig('data/plot_away_results.png')
 		plt_away_time = 'data/plot_away_results.png'
 		image = Image.open(plt_away_time)
-		# Add rounded corners to the image
-		radius = 20  # Adjust the radius for the corners
+		radius = 20
 		rounded_image = add_rounded_corners(image, radius)
-		# Display the image with rounded corners using Matplotlib
 		st.image(rounded_image)
 		plt.close()
-	# if __name__ == "__main__":
-	# 	scraped = scrape(url_wikipedia)
-	# 	extracted = extract()
-	# 	ic(extracted)
-
