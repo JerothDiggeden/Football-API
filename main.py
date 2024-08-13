@@ -13,7 +13,7 @@ from bs4 import BeautifulSoup
 st.set_page_config(page_title="NUFC Web App", page_icon=":material/edit:", layout="wide",
 				   initial_sidebar_state="expanded")
 
-team_id = '33'
+team_id = '34'
 fixture_year = '2024'
 
 url_fixtures = "https://api-football-v1.p.rapidapi.com/v3/fixtures"
@@ -206,23 +206,39 @@ with tab1:
 
 	# Add content inside the first column
 	with col1:
+		coach_full_name = response_coaches['response'][0]['firstname'] + " " + response_coaches['response'][0]['lastname']
+		ic(coach_full_name)
 		url_stadium = f"https://en.wikipedia.org/wiki/{venue_name}"
-		url_coach = f""
-		url_team = f""
+		url_coach = f"https://en.wikipedia.org/wiki/{coach_full_name}"
+		url_team = f"https://en.wikipedia.org/wiki/{team_name} United"
+
 
 		# Send a GET request to fetch the page content
 		response_stadium = requests.get(url_stadium)
+		response_coach = requests.get(url_coach)
+		response_team = requests.get(url_team)
 
 		# Parse the HTML content using BeautifulSoup
-		soup = BeautifulSoup(response_stadium.content, 'html.parser')
+		soup_stadium = BeautifulSoup(response_stadium.content, 'html.parser')
+		soup_coach = BeautifulSoup(response_coach.content, 'html.parser')
+		soup_team = BeautifulSoup(response_team.content, 'html.parser')
 
 		# Find all paragraph tags within the main content area
-		paragraphs = soup.find_all('p')
+		paragraphs_stadium = soup_stadium.find_all('p')
+		paragraphs_coach = soup_coach.find_all('p')
+		paragraphs_team = soup_team.find_all('p')
 
 		# Filter out only the first two non-empty paragraphs
-		first_two_paragraphs_stadium = [p.get_text() for p in paragraphs if p.get_text().strip()][:2]
+		first_two_paragraphs_stadium = [p.get_text() for p in paragraphs_stadium if p.get_text().strip()][:2]
 		par_1_stadium = first_two_paragraphs_stadium[0]
 		par_2_stadium = first_two_paragraphs_stadium[1]
+
+		first_two_paragraphs_coach = [p.get_text() for p in paragraphs_coach if p.get_text().strip()][:2]
+		par_1_coach = first_two_paragraphs_coach[0]
+
+		first_two_paragraphs_team = [p.get_text() for p in paragraphs_team if p.get_text().strip()][:2]
+		par_1_team = first_two_paragraphs_team[0]
+		par_2_team = first_two_paragraphs_team[1]
 		# for v in first_two_paragraphs_stadium:
 		# 	if '\n' in v:
 		# 		v.replace('\n', '')
@@ -234,8 +250,8 @@ with tab1:
 		st.markdown(
 			f"""
 			<div class="custom-container">
-				<h1><img src="{logo}" alt="NUFC" style="float:left;">{team_name}</h1>
-				<p></p>
+				<h1><img src="{logo}" alt="{team_name}" style="float:left;">{team_name}</h1>
+				<p>{par_1_team}</p>
 			</div>
 			""", unsafe_allow_html=True
 		)
@@ -259,9 +275,7 @@ with tab1:
 			f"""
 			<div class="custom-container">
 				<h1><img src="{coach_photo}" alt="{coach}" style="float:left;">{coach}</h1>
-				<p>Edward John Frank Howe (born 29 November 1977) is an English professional football manager and former
-				player. He is the manager of Premier League club Newcastle United and could potentially manage the England
-				national squad.</p>
+				<p>{par_1_coach}</p>
 			</div>
 			""", unsafe_allow_html=True
 		)
@@ -539,8 +553,6 @@ with tab2:
 	years = list(standings_dict.keys())
 	colours = ['#000000', '#3d3d3d', '#8a8a8a']
 	labelx = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
-
-
 
 
 	with col1:
