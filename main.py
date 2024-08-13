@@ -13,7 +13,7 @@ from bs4 import BeautifulSoup
 st.set_page_config(page_title="NUFC Web App", page_icon=":material/edit:", layout="wide",
 				   initial_sidebar_state="expanded")
 
-team_id = '34'
+team_id = '33'
 fixture_year = '2024'
 
 url_fixtures = "https://api-football-v1.p.rapidapi.com/v3/fixtures"
@@ -149,7 +149,6 @@ for image in response_players['response']:
 sorted(players)
 players_lst = players.keys()
 players_lst = sorted(players_lst)
-
 url_wikipedia = f"https://en.wikipedia.org/wiki/{venue_name}"
 
 
@@ -207,7 +206,7 @@ with tab1:
 
 	# Add content inside the first column
 	with col1:
-		url_stadium = f"https://en.wikipedia.org/wiki/St_James%27_Park"
+		url_stadium = f"https://en.wikipedia.org/wiki/{venue_name}"
 		url_coach = f""
 		url_team = f""
 
@@ -222,12 +221,21 @@ with tab1:
 
 		# Filter out only the first two non-empty paragraphs
 		first_two_paragraphs_stadium = [p.get_text() for p in paragraphs if p.get_text().strip()][:2]
+		par_1_stadium = first_two_paragraphs_stadium[0]
+		par_2_stadium = first_two_paragraphs_stadium[1]
+		# for v in first_two_paragraphs_stadium:
+		# 	if '\n' in v:
+		# 		v.replace('\n', '')
+		# first_two_paragraphs_stadium[0].replace('[', ' ')
+		# first_two_paragraphs_stadium[0].replace('"', ' ')
+		# first_two_paragraphs_stadium[len(first_two_paragraphs_stadium) - 1].replace('"', ' ')
+		# first_two_paragraphs_stadium[len(first_two_paragraphs_stadium) - 1].replace(']', ' ')
 
 		st.markdown(
 			f"""
 			<div class="custom-container">
 				<h1><img src="{logo}" alt="NUFC" style="float:left;">{team_name}</h1>
-				<p>{first_two_paragraphs_stadium}</p>
+				<p></p>
 			</div>
 			""", unsafe_allow_html=True
 		)
@@ -240,11 +248,8 @@ with tab1:
 			f"""
 			<div class="custom-container">
 				<h1><img src="{venue_img}" alt="{venue_name}" style="float:left;width:200px;height:160px">{venue_name}</h1>
-				<p>St James' Park has been the home ground of Newcastle United since 1892 and has been used for football
-				since 1880. Throughout its history, the desire for expansion has caused conflict with local residents
-				and the local council. This has led to proposals to move at least twice in the late 1960s, and a
-				controversial 1995 proposed move to nearby Leazes Park. Reluctance to move has led to the distinctive
-				lop-sided appearance of the present-day stadium's asymmetrical stands.</p>
+				<p>{par_1_stadium}</p>
+				<p>{par_2_stadium}</p>
 			</div>
 			""", unsafe_allow_html=True
 		)
