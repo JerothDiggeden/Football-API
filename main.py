@@ -551,6 +551,7 @@ with tab2:
 
 	with col2:
 
+		plt.style.use('grayscale')
 		home_win = []
 		home_draw = []
 		home_lose = []
@@ -562,10 +563,11 @@ with tab2:
 
 		for v in response_standings['response']:
 			if 'Premier League' in v['league']['name']:
-				for h in v['league']['standings'][0][0]['home']:
-					home_win.append(v['league']['standings'][0][0]['home']['win'])
-					home_draw.append(v['league']['standings'][0][0]['home']['draw'])
-					home_lose.append(v['league']['standings'][0][0]['home']['lose'])
+				for a in response_standings['response']:
+					if 'standings' in a['league']:
+						home_win.append(a['league']['standings'][0][0]['home']['win'])
+						home_draw.append(a['league']['standings'][0][0]['home']['draw'])
+						home_lose.append(a['league']['standings'][0][0]['home']['lose'])
 
 		hme_win_len, hme_draw_len, hme_lose_len = len(home_win), len(home_draw), len(home_lose)
 		total_results = sum(home_win) + sum(home_draw) + sum(home_lose)
@@ -589,14 +591,16 @@ with tab2:
 		st.image(rounded_image)
 
 	with col3:
+		plt.style.use('grayscale')
 		for v in response_standings['response']:
 			if 'Premier League' in v['league']['name']:
-				for a in v['league']['standings'][0][0]['away']:
-					away_win.append(v['league']['standings'][0][0]['home']['win'])
-					away_draw.append(v['league']['standings'][0][0]['home']['draw'])
-					away_lose.append(v['league']['standings'][0][0]['home']['lose'])
+				for a in response_standings['response']:
+					if 'standings' in a['league']:
+						away_win.append(a['league']['standings'][0][0]['away']['win'])
+						away_draw.append(a['league']['standings'][0][0]['away']['draw'])
+						away_lose.append(a['league']['standings'][0][0]['away']['lose'])
 
-		hme_win_len, hme_draw_len, hme_lose_len = len(home_win), len(home_draw), len(home_lose)
+		away_win_len, away_draw_len, away_lose_len = len(away_win), len(away_draw), len(away_lose)
 		total_results = sum(away_win) + sum(away_draw) + sum(away_lose)
 		away_win_perc = (sum(away_win) / total_results) * 100
 		away_draw_perc = (sum(away_draw) / total_results) * 100
