@@ -13,9 +13,6 @@ from bs4 import BeautifulSoup
 st.set_page_config(page_title="NUFC Web App", page_icon=":material/edit:", layout="wide",
 				   initial_sidebar_state="expanded")
 
-# team_id_lst = ['33', '34', '35', '36', '37', '38', '39', '40', '41', '42',
-# 		   '43', '44', '45', '46', '47', '48', '49', '50', '51', '52']
-
 team_id_lst = {'33': '', '34': '', '35': '', '36': '', '37': '', '38': '', '39': '', '40': '', '41': '', '42': '',
 		   '43': '', '44': '', '45': '', '46': '', '47': '', '48': '', '49': '', '50': '', '51': '', '52': '', '53': ''}
 
@@ -60,15 +57,10 @@ response_players = response_players.json()
 
 standings_dict = {}
 
-ic(response_players)
-
 tmp_lst = []
 
 for value in response_coaches['response']:
 	tmp_lst.append(value['team']['name'])
-
-ic(tmp_lst)
-
 
 global response_standings, season
 season = 2010
@@ -130,8 +122,6 @@ for i in range(14):
 			standings_dict[season] = standings[0][0].get('rank', 'Unknown')
 			season += 1
 		break
-
-ic(standings_dict)
 
 logo = response_team_stats['response']['team']['logo']
 team_name = response_team_stats['response']['team']['name']
@@ -563,7 +553,7 @@ with tab2:
 		for i in range(len(years)):
 			plt.text(years[i], rank[i], str(rank[i]), fontsize=12, va='bottom', ha='left', wrap=True, color='red')
 		plt.yticks(range(int(min(rank)), int(max(rank)) + 1))
-		# plt.gca().yaxis.set_major_formatter(ticker.FuncFormatter(lambda rank, _: int(rank)))
+		plt.gca().invert_yaxis()
 		plt.xlabel('Years')
 		plt.ylabel('Rank')
 		plt.title(f'{team} Standings by Year')
@@ -656,4 +646,15 @@ with tab2:
 		radius = 20
 		rounded_image = add_rounded_corners(image, radius)
 		st.image(rounded_image)
+		plt.close()
+
+
+	with col3:
+		goals_for_hme = {}
+		goals_for_awa = {}
+		for gd in response_team_stats['response']:
+			goals_for_hme = gd['goals']['for']['total']['home']
+		for gd in response_team_stats['response']:
+			goals_for_hme = gd['goals']['for']['total']['away']
+
 		plt.close()
