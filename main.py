@@ -102,12 +102,10 @@ for i in range(14):
 
 	for place in response_standings['response']:
 		if 'Premier League' not in place['league']['name']:
-			ic('RELEGATED')
 			season += 1
 			break
 		else:
 			league = place['league'].get('name', {})
-			ic(league)
 			standings = place.get('league', {})
 			standings = standings.get('standings', [])
 			standings_dict[season] = standings[0][0].get('rank', 'Unknown')
@@ -545,6 +543,7 @@ with tab2:
 		radius = 20
 		rounded_image = add_rounded_corners(image, radius)
 		st.image(rounded_image)
+		plt.close()
 
 	with col2:
 
@@ -590,6 +589,7 @@ with tab2:
 		rounded_image = add_rounded_corners(image, radius)
 		# Display the image with rounded corners using Matplotlib
 		st.image(rounded_image)
+		plt.close()
 
 	with col3:
 		plt.style.use('grayscale')
@@ -621,6 +621,7 @@ with tab2:
 		rounded_image = add_rounded_corners(image, radius)
 		# Display the image with rounded corners using Matplotlib
 		st.image(rounded_image)
+		plt.close()
 	# if __name__ == "__main__":
 	# 	scraped = scrape(url_wikipedia)
 	# 	extracted = extract()
