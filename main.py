@@ -681,10 +681,8 @@ with tab2:
 		plt.plot(dates, goals_for_hme_lst, marker='o')
 		plt.plot(dates, goals_for_awa_lst, marker='o')
 		plt.legend(['Home', 'Away'], loc='best')
-		# for i in range(len(years)):
-		# 	plt.text(years[i], rank[i], str(rank[i]), fontsize=12, va='bottom', ha='left', wrap=True, color='red')
-		plt.yticks(range(int(min(goals_for_hme_lst)), int(max(goals_for_hme_lst)) + 1))
-		# plt.gca().invert_yaxis()
+		# plt.yticks(range(int(min(goals_for_hme_lst)), int(max(goals_for_hme_lst)) + 1))
+		plt.yticks(range(int(min(goals_for_awa_lst)), int(max(goals_for_hme_lst)), 10))
 		plt.xlabel('Years')
 		plt.ylabel('Goals')
 		plt.title(f'{team} Goals {dates[0]} - {dates[-1]}')
