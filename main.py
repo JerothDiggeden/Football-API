@@ -655,27 +655,24 @@ with tab2:
 	with col4:
 		goals_for_hme = {}
 		goals_for_awa = {}
-		fixture_year_counter = 2023
-		for i in range(20):
-			query_team_stats_goals = {"league": "39", "season": fixture_year_counter, "team": team_id}
+		fixture_year_counter = 2010
+		for i in range(14):
+
+			query_team_stats_goals = {"league": "39", "season": fixture_year_counter, "team": {team_id}}
 			response_team_stats_goals = requests.get(url_team_stats, headers=headers, params=query_team_stats_goals)
 			response_team_stats_goals = response_team_stats_goals.json()
 
-			try:
-				for key in response_team_stats_goals['response']:
-					try:
-						if 'Newcastle' in key['team']['name']:
-							for goals in response_team_stats_goals['response']:
-								if 'league' in goals:
-									goal_hme_key = response_team_stats_goals['response']['league']['season']
-									goal_hme_val = response_team_stats_goals['response']['goals']['for']['total']['home']
-									goal_awa_key = response_team_stats_goals['response']['league']['season']
-									goal_awa_val = response_team_stats_goals['response']['goals']['for']['total']['away']
-									goals_for_hme[goal_hme_key] = goal_hme_val
-									goals_for_awa[goal_awa_key] = goal_awa_val
-									fixture_year_counter += 1
-					except TypeError:
-						continue
+			for key, value in response_team_stats_goals.items():
+				if 'response' in key:
+					for key2, value2 in response_team_stats_goals.items():
+						if 'parameters' in key2:
+							value_goals_for = value['goals']['for']['total']['total']
+							value_goals_against = value['goals']['against']['total']['total']
+							goals_for_hme[fixture_year_counter] = value_goals_for
+							goals_for_awa[fixture_year_counter] = value_goals_against
+							fixture_year_counter += 1
+				else:
+					continue
 plt.close()
 
 ic(goals_for_hme)
