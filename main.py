@@ -648,13 +648,35 @@ with tab2:
 		st.image(rounded_image)
 		plt.close()
 
+	col4, col5, col6 = st.columns([1, 1, 1])
 
-	with col3:
+
+
+	with col4:
 		goals_for_hme = {}
 		goals_for_awa = {}
-		for gd in response_team_stats['response']:
-			goals_for_hme = gd['goals']['for']['total']['home']
-		for gd in response_team_stats['response']:
-			goals_for_hme = gd['goals']['for']['total']['away']
+		fixture_year_counter = 2023
+		for i in range(20):
+			query_team_stats_goals = {"league": "39", "season": fixture_year_counter, "team": team_id}
+			response_team_stats_goals = requests.get(url_team_stats, headers=headers, params=query_team_stats_goals)
+			response_team_stats_goals = response_team_stats_goals.json()
 
-		plt.close()
+			try:
+				for key in response_team_stats_goals['response']:
+					try:
+						if 'Newcastle' in key['team']['name']:
+							for goals in response_team_stats_goals['response']:
+								if 'league' in goals:
+									goal_hme_key = response_team_stats_goals['response']['league']['season']
+									goal_hme_val = response_team_stats_goals['response']['goals']['for']['total']['home']
+									goal_awa_key = response_team_stats_goals['response']['league']['season']
+									goal_awa_val = response_team_stats_goals['response']['goals']['for']['total']['away']
+									goals_for_hme[goal_hme_key] = goal_hme_val
+									goals_for_awa[goal_awa_key] = goal_awa_val
+									fixture_year_counter += 1
+					except TypeError:
+						continue
+plt.close()
+
+ic(goals_for_hme)
+ic(goals_for_awa)
