@@ -41,8 +41,19 @@ headers = {
 	"x-rapidapi-host": "api-football-v1.p.rapidapi.com"
 }
 
+def replace_none(obj):
+	if isinstance(obj, dict):
+		return {k: replace_none(v) for k, v in obj.items()}
+	elif isinstance(obj, list):
+		return [replace_none(item) for item in obj]
+	elif obj is None:
+		return "None"
+	else:
+		return obj
+
 response_fix = requests.get(url_fixtures, headers=headers, params=query_fixtures)
 response_fix = response_fix.json()
+response_fix = replace_none(response_fix)
 
 response_team_stats = requests.get(url_team_stats, headers=headers, params=query_team_stats)
 response_team_stats = response_team_stats.json()
@@ -106,6 +117,7 @@ def add_rounded_corners(image, radius):
 
 	return rounded_image
 
+
 season = 2010
 progress_bar = st.progress(0)
 total_iterations_stand = 14
@@ -129,15 +141,40 @@ for i in range(total_iterations_stand):
 			break
 
 logo = response_team_stats['response']['team']['logo']
-ic(response_fix['response'])
 fixtures_dict = {}
-for k, v in response_fix.items():
-	if 'teams' in k['response'][]:
-		fixtures_dict[k] = v
+logo_count = 0
+for k, v in response_fix['response'][0].items():
+	ic(k, v)
+	if 'goals' in k:
+		ic('goals', k, v)
+		if 'None' in v['away']:
+			ic('away', k, v)
+			for k, v in response_fix['response'][0].items():
+				ic(k, v)
+				if 'teams' in k:
+					ic('teams', k, v)
+					fixtures_dict[k] = v
+		else:
+			ic('away', k, v)
+
+	# if 'score' in k:
+	# 	ic('response')
+	# 	if not v['fulltime']['home']:
+	# 		ic('not score')
+	# 		ic(v)
+	# 		if 'Newcastle' in v['home']['name']:
+	# 			continue
+	# 		else:
+	# 			current_logo = v['home']['logo']
+	# 	else:
+	# 		fixtures_dict[logo_count] = v
+	# 		next_logo = v['home']['logo']
+	# 		logo_count += 1
+
 ic(len(fixtures_dict))
 ic(fixtures_dict)
-last_logo = ''
-next_logo = ''
+# ic(current_logo)
+# ic(next_logo)
 team_name = response_team_stats['response']['team']['name']
 coach = response_coaches['response'][0]['name']
 coach_photo = response_coaches['response'][0]['photo']
