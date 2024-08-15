@@ -48,14 +48,16 @@ for k, v in team_id_dict.copy().items():
 	if '0' in v:
 		team_id_dict.pop(k)
 
-st.sidebar.title("EPL Stats")
-select_team = st.selectbox('Team', team_id_dict)
+team_id_lst = list(team_id_dict.values())
 
+select_team = st.selectbox('Team', team_id_lst)
+
+for k, v in team_id_dict.items():
+	if select_team in v:
+		select_team = k
 
 
 team_id = select_team
-
-fixture_year = '2024'
 
 url_fixtures = "https://api-football-v1.p.rapidapi.com/v3/fixtures"
 url_team_stats = "https://api-football-v1.p.rapidapi.com/v3/teams/statistics"
@@ -68,7 +70,6 @@ query_fixtures = {"league": "39", "season": fixture_year}
 query_team_stats = {"league": "39", "season": fixture_year, "team": team_id}
 query_coaches = {"team": team_id}
 query_players = {"league": "39", "season": fixture_year, "team": team_id}
-
 
 def replace_none(obj):
 	if isinstance(obj, dict):
@@ -99,6 +100,50 @@ response_players = response_players.json()
 standings_dict = {}
 
 tmp_lst = []
+ic(response_team_stats)
+
+url_epl = f"https://en.wikipedia.org/wiki/English Premier League"
+response_epl = requests.get(url_epl)
+soup_team = BeautifulSoup(response_epl.content, 'html.parser')
+paragraphs_epl = soup_team.find_all('p')
+
+# Filter out only the first two non-empty paragraphs
+first_two_paragraphs_epl = [p.get_text() for p in paragraphs_epl if p.get_text().strip()][:2]
+par_1_epl = first_two_paragraphs_epl[0]
+
+st.sidebar.markdown(
+		"""
+		<style>
+		.custom-container {
+			background-color: white;  /* Set your desired background color */
+			font-family: Arial, Helvetica, sans-serif;
+			h2 {
+				  color: black;
+				}
+			h1 {
+				  color: black;
+				}
+			p {
+				  color: black;
+				}
+			padding: 20px;
+			border-radius: 10px;
+			margin: 10px 0;
+		}
+		</style>
+		""", unsafe_allow_html=True
+	)
+
+st.sidebar.title("English Premier League")
+st.sidebar.markdown(
+			f"""
+					<div class="custom-container">
+						<h1 style="text-align: center;"><img src="{response_team_stats['response']['league']['logo']}" style="float:left">
+						<p>{par_1_epl}</p>
+					</div>
+					""", unsafe_allow_html=True
+		)
+st.sidebar.markdown("Test")
 
 for value in response_coaches['response']:
 	tmp_lst.append(value['team']['name'])
