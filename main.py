@@ -140,41 +140,7 @@ for i in range(total_iterations_stand):
 			season += 1
 			break
 
-logo = response_team_stats['response']['team']['logo']
-fixtures_dict = {}
-logo_count = 0
-for k, v in response_fix['response'][0].items():
-	ic(k, v)
-	if 'goals' in k:
-		ic('goals', k, v)
-		if 'None' in v['away']:
-			ic('away', k, v)
-			for k, v in response_fix['response'][0].items():
-				ic(k, v)
-				if 'teams' in k:
-					ic('teams', k, v)
-					fixtures_dict[k] = v
-		else:
-			ic('away', k, v)
 
-	# if 'score' in k:
-	# 	ic('response')
-	# 	if not v['fulltime']['home']:
-	# 		ic('not score')
-	# 		ic(v)
-	# 		if 'Newcastle' in v['home']['name']:
-	# 			continue
-	# 		else:
-	# 			current_logo = v['home']['logo']
-	# 	else:
-	# 		fixtures_dict[logo_count] = v
-	# 		next_logo = v['home']['logo']
-	# 		logo_count += 1
-
-ic(len(fixtures_dict))
-ic(fixtures_dict)
-# ic(current_logo)
-# ic(next_logo)
 team_name = response_team_stats['response']['team']['name']
 coach = response_coaches['response'][0]['name']
 coach_photo = response_coaches['response'][0]['photo']
@@ -182,6 +148,29 @@ coach_photo = response_coaches['response'][0]['photo']
 players = {}
 players_lst = []
 photo_lst = []
+logo = response_team_stats['response']['team']['logo']
+fixture_next = {}
+fixtures_dict = {}
+logo_count = 0
+index = 0
+
+for i in range(367):
+	for k, v in response_fix['response'][i - 1].items():
+		ic(k, v)
+		if 'goals' in k:
+			ic('goals', k, v)
+			if 'None' in v['away']:
+				ic('away', k, v)
+				for k, v in response_fix['response'][i - 1].items():
+					ic('response', k, v)
+					if 'teams' in k:
+						if team_name in v['away']['name'] or 'Newcastle' in v['home']['name']:
+							ic('teams', k, v)
+							fixture_next[i] = v
+						else:
+							continue
+			else:
+				fixtures_dict[k] = v
 
 for id in response_test['response']:
 	if team_id in str(id['team']['id']):
@@ -594,8 +583,7 @@ with tab2:
 		st.markdown(
 			f"""
 					<div class="custom-container">
-						<h1><img src="{logo}" style="float:left;width:200px;height:160px">
-						<img src="{logo}" style="float:right;width:200px;height:160px"></h1>
+						<h1 style="text-align: center;"><img src="{logo}" style="float:left">{'0'} - {'0'}<img src="{logo}" style="float:right"></h1>
 						<h1>
 						</h1>
 					</div>
@@ -606,8 +594,7 @@ with tab2:
 		st.markdown(
 			f"""
 					<div class="custom-container">
-						<h1><img src="{logo}" style="float:left;width:200px;height:160px">
-						<img src="{logo}" style="float:right;width:200px;height:160px"></h1>
+						<h1 style="text-align: center;"><img src="{logo}" style="float:left">{'0'} - {'0'}<img src="{logo}" style="float:right"></h1>
 						<h1>
 						</h1>
 					</div>
