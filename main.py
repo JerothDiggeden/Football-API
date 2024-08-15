@@ -109,7 +109,6 @@ def add_rounded_corners(image, radius):
 season = 2010
 progress_bar = st.progress(0)
 total_iterations_stand = 14
-placeholder = st.empty()
 for i in range(total_iterations_stand):
 	percent_complete = int((i + 1) / total_iterations_stand * 100)
 	progress_bar.progress(percent_complete)
@@ -128,7 +127,6 @@ for i in range(total_iterations_stand):
 			standings_dict[season] = standings[0][0].get('rank', 'Unknown')
 			season += 1
 			break
-placeholder.empty()
 
 logo = response_team_stats['response']['team']['logo']
 team_name = response_team_stats['response']['team']['name']
@@ -541,6 +539,7 @@ with tab2:
 	)
 
 	st.header("Statistics")
+	st.header("Current")
 
 	col1, col2, col3 = st.columns([1, 1, 1])
 
@@ -550,8 +549,28 @@ with tab2:
 	colours = ['#000000', '#3d3d3d', '#8a8a8a']
 	labelx = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
 
-
 	with col1:
+		st.write("Col1")
+
+	with col2:
+
+		st.write("Col2")
+
+	with col3:
+		st.write("Col3")
+
+	st.header("Historical")
+
+	col4, col5, col6 = st.columns([1, 1, 1])
+
+	x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+	rank = list(standings_dict.values())
+	years = list(standings_dict.keys())
+	colours = ['#000000', '#3d3d3d', '#8a8a8a']
+	labelx = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+
+
+	with col4:
 		try:
 			plt.style.use('grayscale')
 		except KeyError:
@@ -572,7 +591,7 @@ with tab2:
 		st.image(rounded_image)
 		plt.close()
 
-	with col2:
+	with col5:
 
 		try:
 			plt.style.use('grayscale')
@@ -622,7 +641,7 @@ with tab2:
 		st.image(rounded_image)
 		plt.close()
 
-	with col3:
+	with col6:
 		try:
 			plt.style.use('grayscale')
 		except KeyError:
@@ -655,9 +674,9 @@ with tab2:
 		st.image(rounded_image)
 		plt.close()
 
-	col4, col5, col6 = st.columns([1, 1, 1])
+	col7, col8, col9 = st.columns([1, 1, 1])
 
-	with col4:
+	with col7:
 		goals_for_hme = {}
 		goals_for_awa = {}
 		fixture_year_counter = 2010
