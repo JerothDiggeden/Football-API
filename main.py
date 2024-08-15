@@ -150,21 +150,10 @@ players_lst = []
 photo_lst = []
 fixture_next = {}
 fixtures_dict = {}
+logo_dict = {}
 logo_count = 0
 index = 0
 logo = response_team_stats['response']['team']['logo']
-
-# for k, v in response_fix['response'][0].items():
-# 	ic('response', k, v)
-# 	if 'teams' in k:
-# 		ic('teams', k, v)
-# 		if team_name in v['away']['name']:
-# 			ic('team name', k, v)
-# 			logo_opponent = v['home']['name']
-# 		else:
-# 			ic('else', k, v)
-# 			logo_opponent = v['away']['name']
-
 
 for i in range(367):
 	for k, v in response_fix['response'][i - 1].items():
@@ -172,18 +161,30 @@ for i in range(367):
 			if 'None' in v['away']:
 				for k, v in response_fix['response'][i - 1].items():
 					if 'teams' in k:
-						if team_name in v['away']['name'] or 'Newcastle' in v['home']['name']:
+						if team_name in v['away']['name'] or team_name in v['home']['name']:
 							fixture_next[i] = v
-							if team_name in v['away']['name']:
-								ic(v['home']['logo'])
-								logo_opponent = v['home']['logo']
-							else:
-								ic(v['home']['logo'])
-								logo_opponent = v['away']['logo']
 						else:
 							continue
 			else:
 				fixtures_dict[k] = v
+
+for k, v in response_fix['response'][logo_count].items():
+	logo_count += 1
+	if 'goals' in k:
+		if 'None' in v['away']:
+			for k, v in response_fix['response'][logo_count].items():
+				if 'teams' in k:
+					if team_name in v['away']['name'] or team_name in v['home']['name']:
+						if team_name in v['away']['name']:
+							logo_opponent = v['home']['logo']
+							break
+						else:
+							logo_opponent = v['away']['logo']
+							break
+					else:
+						continue
+		else:
+			continue
 
 
 for id in response_test['response']:
@@ -597,6 +598,7 @@ with tab2:
 		st.markdown(
 			f"""
 					<div class="custom-container">
+					<h1>Last Fixture</h1>
 						<h1 style="text-align: center;"><img src="{logo}" style="float:left">{'0'} - {'0'}<img src="{logo}" style="float:right"></h1>
 						<h1>
 						</h1>
@@ -608,6 +610,7 @@ with tab2:
 		st.markdown(
 			f"""
 					<div class="custom-container">
+						<h1>Next Fixture</h1>
 						<h1 style="text-align: center;"><img src="{logo}" style="float:left">{'0'} - {'0'}<img src="{logo_opponent}" style="float:right"></h1>
 						<h1>
 						</h1>
