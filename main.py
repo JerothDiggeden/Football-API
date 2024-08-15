@@ -152,6 +152,7 @@ fixture_next = {}
 fixtures_dict = {}
 logo_dict = {}
 logo_count = 0
+fix_count = 0
 index = 0
 logo = response_team_stats['response']['team']['logo']
 
@@ -166,25 +167,29 @@ for i in range(367):
 						else:
 							continue
 			else:
-				fixtures_dict[k] = v
+				fixtures_dict[i] = v
 
-for k, v in response_fix['response'][logo_count].items():
-	logo_count += 1
-	if 'goals' in k:
-		if 'None' in v['away']:
-			for k, v in response_fix['response'][logo_count].items():
-				if 'teams' in k:
-					if team_name in v['away']['name'] or team_name in v['home']['name']:
-						if team_name in v['away']['name']:
-							logo_opponent = v['home']['logo']
-							break
+ic(fixtures_dict)
+
+for i in range(367):
+	for k, v in response_fix['response'][i].items():
+		if 'goals' in k:
+			if 'None' in v['away']:
+				for k, v in response_fix['response'][i].items():
+					if 'teams' in k:
+						if team_name in v['away']['name'] or team_name in v['home']['name']:
+							if team_name in v['away']['name']:
+								logo_dict[logo_count] = v['home']['logo']
+								logo_count += 1
+							else:
+								logo_dict[logo_count] = v['away']['logo']
+								logo_count += 1
 						else:
-							logo_opponent = v['away']['logo']
-							break
-					else:
-						continue
-		else:
-			continue
+							continue
+			else:
+				continue
+
+ic(logo_dict)
 
 
 for id in response_test['response']:
@@ -611,7 +616,7 @@ with tab2:
 			f"""
 					<div class="custom-container">
 						<h1>Next Fixture</h1>
-						<h1 style="text-align: center;"><img src="{logo}" style="float:left">{'0'} - {'0'}<img src="{logo_opponent}" style="float:right"></h1>
+						<h1 style="text-align: center;"><img src="{logo}" style="float:left">{'0'} - {'0'}<img src="{logo_dict[0]}" style="float:right"></h1>
 						<h1>
 						</h1>
 					</div>
@@ -770,7 +775,7 @@ with tab2:
 
 	col7, col8, col9 = st.columns([1, 1, 1])
 
-	with col9:
+	with col7:
 		goals_for_hme = {}
 		goals_for_awa = {}
 		fixture_year_counter = 2010
