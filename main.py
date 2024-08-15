@@ -108,8 +108,11 @@ def add_rounded_corners(image, radius):
 
 season = 2010
 progress_bar = st.progress(0)
-for i in range(14):
-	progress_bar.progress((i * 7) + 1)
+total_iterations_stand = 14
+placeholder = st.empty()
+for i in range(total_iterations_stand):
+	percent_complete = int((i + 1) / total_iterations_stand * 100)
+	progress_bar.progress(percent_complete)
 	query_standings = {"season": str(season), "team": str(team_id)}
 	response_standings = requests.get(url_standings, headers=headers, params=query_standings)
 	response_standings = response_standings.json()
@@ -125,6 +128,7 @@ for i in range(14):
 			standings_dict[season] = standings[0][0].get('rank', 'Unknown')
 			season += 1
 			break
+placeholder.empty()
 
 logo = response_team_stats['response']['team']['logo']
 team_name = response_team_stats['response']['team']['name']
@@ -658,8 +662,10 @@ with tab2:
 		goals_for_awa = {}
 		fixture_year_counter = 2010
 		progress_bar = st.progress(0)
-		for i in range(10):
-			progress_bar.progress((i * 7) + 1)
+		total_iterations = 14
+		for i in range(total_iterations):
+			percent_complete = int((i + 1) / total_iterations * 100)
+			progress_bar.progress(percent_complete)
 			query_team_stats_goals = {"league": "39", "season": fixture_year_counter, "team": {team_id}}
 			response_team_stats_goals = requests.get(url_team_stats, headers=headers, params=query_team_stats_goals)
 			response_team_stats_goals = response_team_stats_goals.json()
