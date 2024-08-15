@@ -14,9 +14,10 @@ import time
 st.set_page_config(page_title="NUFC Web App", page_icon=":material/edit:", layout="wide",
 				   initial_sidebar_state="expanded")
 
-team_id_dict = {'33': '', '34': '', '35': '', '36': '', '37': '', '38': '', '39': '', '40': '', '41': '', '42': '',
-		   '43': '', '44': '', '45': '', '46': '', '47': '', '48': '', '49': '', '50': '', '51': '', '52': '', '53': '',
-				'54': '', '55': '', '56': '', '57': '', '58': '', '59': '', '60': '', '61': ''}
+team_id_dict = {'33': '0', '34': '0', '35': '0', '36': '0', '37': '0', '38': '0', '39': '0', '40': '0', '41': '0', '42': '0',
+		   '43': '0', '44': '0', '45': '0', '46': '0', '47': '0', '48': '0', '49': '0', '50': '0', '51': '0', '52': '0', '53': '0',
+				'54': '0', '55': '0', '56': '0', '57': '0', '58':  '0', '59': '0', '60': '0', '61': '0', '62': '0', '63': '0', '64'
+				: '0', '65': '0', '66': '0'}
 
 st.sidebar.title("EPL Stats")
 select_team = st.selectbox('Team', team_id_dict)
@@ -203,6 +204,11 @@ for id, value in team_id_dict.items():
 			if id in str(t_id['team']['id']):
 				if 'team' in t_id:
 					team_id_dict[id] = t_id['team']['name']
+
+for k, v in team_id_dict.copy().items():
+	if '0' in v:
+		team_id_dict.pop(k)
+
 
 ic(team_id_dict)
 
