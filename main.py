@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 from PIL import Image, ImageDraw, ImageOps
 from bs4 import BeautifulSoup
+import time
 
 
 
@@ -31,8 +32,8 @@ test = "https://api-football-v1.p.rapidapi.com/v3/teams/"
 
 query_fixtures = {"league": "39", "season": fixture_year}
 query_team_stats = {"league": "39", "season": fixture_year, "team": team_id}
-query_coaches = {"team": f"{team_id}"}
-query_players = {"league": "39", "season": fixture_year, "team": f"{team_id}"}
+query_coaches = {"team": team_id}
+query_players = {"league": "39", "season": fixture_year, "team": team_id}
 
 
 headers = {
@@ -106,7 +107,9 @@ def add_rounded_corners(image, radius):
 	return rounded_image
 
 season = 2010
+progress_bar = st.progress(0)
 for i in range(14):
+	progress_bar.progress((i * 7) + 1)
 	query_standings = {"season": str(season), "team": str(team_id)}
 	response_standings = requests.get(url_standings, headers=headers, params=query_standings)
 	response_standings = response_standings.json()
@@ -121,7 +124,7 @@ for i in range(14):
 			standings = standings.get('standings', [])
 			standings_dict[season] = standings[0][0].get('rank', 'Unknown')
 			season += 1
-		break
+			break
 
 logo = response_team_stats['response']['team']['logo']
 team_name = response_team_stats['response']['team']['name']
@@ -161,7 +164,7 @@ url_wikipedia = f"https://en.wikipedia.org/wiki/{venue_name}"
 
 
 for team in response_fix['response']:
-	if 'Newcastle' in team['teams']['away']['name'] or 'Newcastle' in team['teams']['home']['name']:
+	if team_name in team['teams']['away']['name'] or 'Newcastle' in team['teams']['home']['name']:
 		teams = team['teams']
 		date = team['fixture']['date']
 		venue = team['fixture']['venue']
@@ -654,8 +657,9 @@ with tab2:
 		goals_for_hme = {}
 		goals_for_awa = {}
 		fixture_year_counter = 2010
-		for i in range(14):
-
+		progress_bar = st.progress(0)
+		for i in range(10):
+			progress_bar.progress((i * 7) + 1)
 			query_team_stats_goals = {"league": "39", "season": fixture_year_counter, "team": {team_id}}
 			response_team_stats_goals = requests.get(url_team_stats, headers=headers, params=query_team_stats_goals)
 			response_team_stats_goals = response_team_stats_goals.json()
