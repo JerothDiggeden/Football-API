@@ -129,6 +129,15 @@ for i in range(total_iterations_stand):
 			break
 
 logo = response_team_stats['response']['team']['logo']
+ic(response_fix['response'])
+fixtures_dict = {}
+for k, v in response_fix.items():
+	if 'teams' in k['response'][]:
+		fixtures_dict[k] = v
+ic(len(fixtures_dict))
+ic(fixtures_dict)
+last_logo = ''
+next_logo = ''
 team_name = response_team_stats['response']['team']['name']
 coach = response_coaches['response'][0]['name']
 coach_photo = response_coaches['response'][0]['photo']
@@ -541,27 +550,71 @@ with tab2:
 	st.header("Statistics")
 	st.header("Current")
 
-	col1, col2, col3 = st.columns([1, 1, 1])
-
-	x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
-	rank = list(standings_dict.values())
-	years = list(standings_dict.keys())
-	colours = ['#000000', '#3d3d3d', '#8a8a8a']
-	labelx = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+	col1, col2 = st.columns([1, 1])
 
 	with col1:
-		st.write("Col1")
+
+		st.markdown(
+			f"""
+					<div class="custom-container">
+						<h1><img src="{logo}" style="float:left;width:200px;height:160px">
+						<img src="{logo}" style="float:right;width:200px;height:160px"></h1>
+						<h1>
+						</h1>
+					</div>
+					""", unsafe_allow_html=True
+		)
 
 	with col2:
+		st.markdown(
+			f"""
+					<div class="custom-container">
+						<h1><img src="{logo}" style="float:left;width:200px;height:160px">
+						<img src="{logo}" style="float:right;width:200px;height:160px"></h1>
+						<h1>
+						</h1>
+					</div>
+					""", unsafe_allow_html=True
+		)
 
-		st.write("Col2")
+	col3, col4, col5 = st.columns([1, 1, 1])
 
 	with col3:
-		st.write("Col3")
+		st.markdown(
+			f"""
+							<div class="custom-container">
+								<h1>Current Rank</h1>
+								<h1>
+								</h1>
+							</div>
+							""", unsafe_allow_html=True
+		)
+
+	with col4:
+		st.markdown(
+			f"""
+							<div class="custom-container">
+								<h1>Goals for, against, and gd</h1>
+								<h1>
+								</h1>
+							</div>
+							""", unsafe_allow_html=True
+		)
+
+	with col5:
+		st.markdown(
+			f"""
+									<div class="custom-container">
+										<h1>Bar Chart Striker Goals</h1>
+										<h1>
+										</h1>
+									</div>
+									""", unsafe_allow_html=True
+		)
 
 	st.header("Historical")
 
-	col4, col5, col6 = st.columns([1, 1, 1])
+	col6, col7, col8 = st.columns([1, 1, 1])
 
 	x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
 	rank = list(standings_dict.values())
@@ -570,7 +623,7 @@ with tab2:
 	labelx = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
 
 
-	with col4:
+	with col6:
 		try:
 			plt.style.use('grayscale')
 		except KeyError:
@@ -591,7 +644,7 @@ with tab2:
 		st.image(rounded_image)
 		plt.close()
 
-	with col5:
+	with col7:
 
 		try:
 			plt.style.use('grayscale')
@@ -641,7 +694,7 @@ with tab2:
 		st.image(rounded_image)
 		plt.close()
 
-	with col6:
+	with col8:
 		try:
 			plt.style.use('grayscale')
 		except KeyError:
@@ -676,7 +729,7 @@ with tab2:
 
 	col7, col8, col9 = st.columns([1, 1, 1])
 
-	with col7:
+	with col9:
 		goals_for_hme = {}
 		goals_for_awa = {}
 		fixture_year_counter = 2010
