@@ -14,11 +14,11 @@ import time
 st.set_page_config(page_title="NUFC Web App", page_icon=":material/edit:", layout="wide",
 				   initial_sidebar_state="expanded")
 
-team_id_lst = {'33': '', '34': '', '35': '', '36': '', '37': '', '38': '', '39': '', '40': '', '41': '', '42': '',
+team_id_dict = {'33': '', '34': '', '35': '', '36': '', '37': '', '38': '', '39': '', '40': '', '41': '', '42': '',
 		   '43': '', '44': '', '45': '', '46': '', '47': '', '48': '', '49': '', '50': '', '51': '', '52': '', '53': ''}
 
 st.sidebar.title("EPL Stats")
-select_team = st.selectbox('Team', team_id_lst)
+select_team = st.selectbox('Team', team_id_dict)
 
 team_id = select_team
 fixture_year = '2024'
@@ -189,13 +189,21 @@ for i in range(367):
 			else:
 				continue
 
-ic(logo_dict)
-
 
 for id in response_test['response']:
 	if team_id in str(id['team']['id']):
 		venue_img = id['venue']['image']
 		break
+
+
+for id, value in team_id_dict.items():
+	if id in id:
+		for t_id in response_test['response']:
+			if id in str(t_id['team']['id']):
+				if 'team' in t_id:
+					team_id_dict[id] = t_id['team']['name']
+
+ic(team_id_dict)
 
 for id in response_test['response']:
 	if team_id in str(id['team']['id']):
