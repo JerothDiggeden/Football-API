@@ -740,7 +740,7 @@ with tab2:
 			f"""
 					<div class="custom-container">
 					<h1>Last Fixture</h1>
-						<h1 style="text-align: center;"><img src="{logo}" style="float:left">{goals_for} - {goals_against}<img src="{list(logo_last_dict.values())[-1]}" style="float:right"></h1>
+						<h1 style="text-align: center;"><img src="{logo}" style="float:left">{goals_against} - {goals_for}<img src="{list(logo_last_dict.values())[-1]}" style="float:right"></h1>
 						<h1>
 						</h1>
 					</div>
