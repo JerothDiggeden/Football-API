@@ -233,9 +233,13 @@ ic(response_fix)
 for i in range(367):
 	for k, v in response_fix['response'][i].items():
 		if 'goals' in k:
+			ic('goals')
 			if 'None' in str(v['away']):
+				ic('None')
 				for k, v in response_fix['response'][i].items():
+					ic('response')
 					if 'teams' in k:
+						ic('teams')
 						if team_name in v['away']['name'] or team_name in v['home']['name']:
 							if team_name in v['away']['name']:
 								logo_dict[logo_count] = v['home']['logo']
@@ -260,13 +264,20 @@ for i in range(367):
 					if 'score' in k:
 						for t, i in response_fix['response'][i].items():
 							if 'teams' in t:
+								ic('teams')
 								if team_name in i['away']['name'] or team_name in i['home']['name']:
+									ic('Team Name', team_name)
 									if team_name in i['away']['name']:
+										ic('None')
+										if 'None' in k['score']['fulltime']['away']:
+											goals_for = '0'
+											goals_against = '0'
+									else:
 										goals_for = str(v['fulltime']['away'])
 										goals_against = str(v['fulltime']['home'])
-									else:
-										goals_for = str(v['fulltime']['home'])
-										goals_against = str(v['fulltime']['away'])
+								else:
+									goals_for = str(v['fulltime']['home'])
+									goals_against = str(v['fulltime']['away'])
 				continue
 
 for i in range(367):
@@ -282,12 +293,6 @@ for i in range(367):
 			else:
 				fixtures_dict[i] = v
 				fix_count += 1
-
-ic(fixtures_dict)
-
-ic(fix_count)
-ic(logo_dict)
-
 
 for id in response_test['response']:
 	if team_id in str(id['team']['id']):
