@@ -879,7 +879,7 @@ with tab2:
 		goals_for_awa = {}
 		fixture_year_counter = 2010
 		progress_bar = st.progress(0)
-		total_iterations = 14
+		total_iterations = 15
 		for i in range(total_iterations):
 			percent_complete = int((i + 1) / total_iterations * 100)
 			progress_bar.progress(percent_complete)
