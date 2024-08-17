@@ -228,18 +228,38 @@ fix_count = 0
 index = 0
 logo = response_team_stats['response']['team']['logo']
 
-ic(response_fix)
+# for i in range(367):
+# 	for k, v in response_fix['response'][i].items():
+# 		if 'goals' in k:
+# 			if 'None' in str(v['away']):
+# 				for t, i in response_fix['response'][i].items():
+# 					if 'teams' in t:
+# 						if team_name in i['away']['name'] or team_name in i['home']['name']:
+# 							if team_name in i['away']['name']:
+# 								logo_dict[logo_count] = i['away']['logo']
+# 								logo_count += 1
+# 							else:
+# 								logo_dict[logo_count] = i['home']['logo']
+# 								logo_count += 1
+# 						else:
+# 							continue
+# 			else:
+# 				for first, last in response_fix['response'][i].items():
+# 					if 'teams' in first:
+# 						if team_name in last['away']['name'] or team_name in last['home']['name']:
+# 							if team_name in last['away']['name']:
+# 								logo_last_dict[logo_count] = last['home']['logo']
+# 								logo_count += 1
+# 							else:
+# 								logo_last_dict[logo_count] = last['away']['logo']
+# 								logo_count += 1
 
 for i in range(367):
 	for k, v in response_fix['response'][i].items():
 		if 'goals' in k:
-			ic('goals')
 			if 'None' in str(v['away']):
-				ic('None')
 				for k, v in response_fix['response'][i].items():
-					ic('response')
 					if 'teams' in k:
-						ic('teams')
 						if team_name in v['away']['name'] or team_name in v['home']['name']:
 							if team_name in v['away']['name']:
 								logo_dict[logo_count] = v['home']['logo']
@@ -258,7 +278,17 @@ for i in range(367):
 							else:
 								logo_last_dict[logo_count] = v['away']['logo']
 
-				logo_last_count += 1
+				for k, v in response_fix['response'][i].items():
+					if 'score' in k:
+						for t, y in response_fix['response'][i].items():
+							if 'teams' in t:
+								if team_name in y['away']['name'] or team_name in y['home']['name']:
+									if team_name in y['away']['name']:
+										goals_for = str(v['fulltime']['away'])
+										goals_against = str(v['fulltime']['home'])
+									else:
+										goals_for = str(v['fulltime']['home'])
+										goals_against = str(v['fulltime']['away'])
 
 				for k, v in response_fix['response'][i].items():
 					if 'score' in k:
@@ -278,7 +308,11 @@ for i in range(367):
 								else:
 									goals_for = str(v['fulltime']['home'])
 									goals_against = str(v['fulltime']['away'])
+
+				logo_last_count += 1
 				continue
+
+ic(logo_last_dict)
 
 for i in range(367):
 	for k, v in response_fix['response'][i - 1].items():
@@ -367,7 +401,6 @@ with tab1:
 	# Add content inside the first column
 	with col1:
 		coach_full_name = response_coaches['response'][0]['firstname'] + " " + response_coaches['response'][0]['lastname']
-		ic(coach_full_name)
 		url_stadium = f"https://en.wikipedia.org/wiki/{venue_name}"
 		url_coach = f"https://en.wikipedia.org/wiki/{coach_full_name}"
 		url_team = f"https://en.wikipedia.org/wiki/{team_name}"
