@@ -1,12 +1,9 @@
 import requests
 from icecream import ic
 import streamlit as st
-import selectorlib
 import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker
 from PIL import Image, ImageDraw, ImageOps
 from bs4 import BeautifulSoup
-import time
 
 
 
@@ -139,11 +136,10 @@ st.sidebar.markdown(
 			f"""
 					<div class="custom-container">
 						<h1 style="text-align: center;"><img src="{response_team_stats['response']['league']['logo']}" style="float:left">
-						<p>{par_1_epl}</p>
+						<p><b>{par_1_epl}</b></p>
 					</div>
 					""", unsafe_allow_html=True
 		)
-st.sidebar.markdown("Test")
 
 for value in response_coaches['response']:
 	tmp_lst.append(value['team']['name'])
@@ -220,35 +216,24 @@ coach = response_coaches['response'][0]['name']
 coach_photo = response_coaches['response'][0]['photo']
 
 players = {}
-players_lst = []
-photo_lst = []
 fixture_next = {}
 fixtures_dict = {}
 logo_dict = {}
+logo_last_dict = {}
+players_lst = []
+photo_lst = []
 logo_count = 0
+logo_last_count = 0
 fix_count = 0
 index = 0
 logo = response_team_stats['response']['team']['logo']
 
-for i in range(367):
-	for k, v in response_fix['response'][i - 1].items():
-		if 'goals' in k:
-			if 'None' in v['away']:
-				for k, v in response_fix['response'][i - 1].items():
-					if 'teams' in k:
-						if team_name in v['away']['name'] or team_name in v['home']['name']:
-							fixture_next[i] = v
-						else:
-							continue
-			else:
-				fixtures_dict[i] = v
-
-ic(fixtures_dict)
+ic(response_fix)
 
 for i in range(367):
 	for k, v in response_fix['response'][i].items():
 		if 'goals' in k:
-			if 'None' in v['away']:
+			if 'None' in str(v['away']):
 				for k, v in response_fix['response'][i].items():
 					if 'teams' in k:
 						if team_name in v['away']['name'] or team_name in v['home']['name']:
@@ -261,7 +246,47 @@ for i in range(367):
 						else:
 							continue
 			else:
+				for k, v in response_fix['response'][i].items():
+					if 'teams' in k:
+						if team_name in v['away']['name'] or team_name in v['home']['name']:
+							if team_name in v['away']['name']:
+								logo_last_dict[logo_count] = v['home']['logo']
+							else:
+								logo_last_dict[logo_count] = v['away']['logo']
+
+				logo_last_count += 1
+
+				for k, v in response_fix['response'][i].items():
+					if 'score' in k:
+						for t, i in response_fix['response'][i].items():
+							if 'teams' in t:
+								if team_name in i['away']['name'] or team_name in i['home']['name']:
+									if team_name in i['away']['name']:
+										goals_for = str(v['fulltime']['away'])
+										goals_against = str(v['fulltime']['home'])
+									else:
+										goals_for = str(v['fulltime']['home'])
+										goals_against = str(v['fulltime']['away'])
 				continue
+
+for i in range(367):
+	for k, v in response_fix['response'][i - 1].items():
+		if 'goals' in k:
+			if 'None' in str(v['away']):
+				for k, v in response_fix['response'][i - 1].items():
+					if 'teams' in k:
+						if team_name in v['away']['name'] or team_name in v['home']['name']:
+							fixture_next[i] = v
+						else:
+							continue
+			else:
+				fixtures_dict[i] = v
+				fix_count += 1
+
+ic(fixtures_dict)
+
+ic(fix_count)
+ic(logo_dict)
 
 
 for id in response_test['response']:
@@ -677,7 +702,7 @@ with tab2:
 			f"""
 					<div class="custom-container">
 					<h1>Last Fixture</h1>
-						<h1 style="text-align: center;"><img src="{logo}" style="float:left">{'0'} - {'0'}<img src="{logo}" style="float:right"></h1>
+						<h1 style="text-align: center;"><img src="{logo}" style="float:left">{goals_for} - {goals_against}<img src="{list(logo_last_dict.values())[-1]}" style="float:right"></h1>
 						<h1>
 						</h1>
 					</div>
@@ -791,6 +816,7 @@ with tab2:
 
 		hme_win_len, hme_draw_len, hme_lose_len = len(home_win), len(home_draw), len(home_lose)
 		total_results = sum(home_win) + sum(home_draw) + sum(home_lose)
+
 		hme_win_perc = (sum(home_win) / total_results) * 100
 		hme_draw_perc = (sum(home_draw) / total_results) * 100
 		hme_lose_perc = (sum(home_lose) / total_results) * 100
