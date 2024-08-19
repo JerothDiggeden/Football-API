@@ -240,7 +240,7 @@ ic(top_scorers_len)
 for i in range(top_scorers_len):
 	for k, v in response_scorers['response'][i - 1].items():
 		if 'player' in k:
-			for a, b in response_scorers['response'][0].items():
+			for a, b in response_scorers['response'][i - 1].items():
 				if 'statistics' in a:
 					top_scorers[v['name']] = b[0]['goals']['total']
 					continue
