@@ -984,14 +984,14 @@ with tab2:
 		top_scorers_max = max(top_scorers.values())
 		top_scorers_lst = list(top_scorers.values())
 		top_scorers_sorted = {}
-		for k, v in top_scorers.copy():
-			top_scorers_sorted[v] = k
+
 		top_scorers_sorted = dict(sorted(top_scorers_sorted.items()))
 		top_scorers_name_lst = list(top_scorers_sorted.values())
 		x = range(5)
+		top_scorers_sorted = top_scorers_sorted[:4]
 
 		plt.bar(x, top_scorers_lst)
-		plt.xticks(x, top_scorers_sorted[0:4], rotation=45)
+		plt.xticks(x, top_scorers_sorted, rotation=45)
 		plt.title(f'{team} Top Scorers 2023')
 		plt.savefig('data/bar_scorers.png')
 		plt_away_time = 'data/bar_scorers.png'
