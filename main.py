@@ -61,12 +61,14 @@ url_team_stats = "https://api-football-v1.p.rapidapi.com/v3/teams/statistics"
 url_coaches = "https://api-football-v1.p.rapidapi.com/v3/coachs"
 url_players = "https://api-football-v1.p.rapidapi.com/v3/players"
 url_standings = "https://api-football-v1.p.rapidapi.com/v3/standings"
+url_scorers = "https://api-football-v1.p.rapidapi.com/v3/players/topscorers"
 test = "https://api-football-v1.p.rapidapi.com/v3/teams/"
 
 query_fixtures = {"league": "39", "season": fixture_year}
 query_team_stats = {"league": "39", "season": fixture_year, "team": team_id}
 query_coaches = {"team": team_id}
 query_players = {"league": "39", "season": fixture_year, "team": team_id}
+query_scorers = {"league": "39", "season": str(int(fixture_year) - 1)}
 
 def replace_none(obj):
 	if isinstance(obj, dict):
@@ -93,6 +95,10 @@ response_coaches = response_coaches.json()
 
 response_players = requests.get(url_players, headers=headers, params=query_players)
 response_players = response_players.json()
+
+response_scorers = requests.get(url_scorers, headers=headers, params=query_scorers)
+response_scorers = response_scorers.json()
+
 
 standings_dict = {}
 
@@ -212,7 +218,7 @@ team_name = response_team_stats['response']['team']['name']
 coach = response_coaches['response'][0]['name']
 coach_photo = response_coaches['response'][0]['photo']
 
-ic(response_team_stats)
+ic(response_scorers)
 
 players = {}
 fixture_next = {}
@@ -221,12 +227,25 @@ logo_dict = {}
 logo_last_dict = {}
 players_lst = []
 photo_lst = []
+top_scorers = {}
 goals_for = response_team_stats['response']
 logo_count = 0
 logo_last_count = 0
 fix_count = 0
 index = 0
 logo = response_team_stats['response']['team']['logo']
+top_scorers_len = len(response_scorers['response'])
+
+ic(top_scorers_len)
+for i in range(top_scorers_len):
+	for k, v in response_scorers['response'][i - 1].items():
+		if 'player' in k:
+			for a, b in response_scorers['response'][0].items():
+				if 'statistics' in a:
+					top_scorers[v['name']] = b[0]['goals']['total']
+					continue
+
+ic(top_scorers)
 
 
 for i in range(367):
@@ -724,7 +743,7 @@ with tab2:
 			f"""
 							<div class="custom-container">
 								<h1>Current Rank</h1>
-								<h2 style="font-size: 700%;">{standings_dict[int(fixture_year)]}</h2>
+								<h2 style="font-size: 490%;">{standings_dict[int(fixture_year)]}</h2>
 							</div>
 							""", unsafe_allow_html=True
 		)
@@ -824,7 +843,6 @@ with tab2:
 									home_win.append(a)
 									home_draw.append(a)
 									home_lose.append(a)
-									ic('None', a)
 								else:
 									home_win.append(b['draws']['home'])
 									home_draw.append(b['wins']['home'])
@@ -876,13 +894,11 @@ with tab2:
 					if 'Premier League' in v['name']:
 						for a, b in response_standings['response'].items():
 							if 'fixtures' in a:
-								ic(a, b)
 								if 'None' in str(b['draws']['total']):
 									a = 0
 									away_win.append(a)
 									away_draw.append(a)
 									away_lose.append(a)
-									ic('None', a)
 								else:
 									away_win.append(b['draws']['away'])
 									away_draw.append(b['wins']['away'])
