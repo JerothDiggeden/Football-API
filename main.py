@@ -212,6 +212,8 @@ team_name = response_team_stats['response']['team']['name']
 coach = response_coaches['response'][0]['name']
 coach_photo = response_coaches['response'][0]['photo']
 
+ic(response_team_stats)
+
 players = {}
 fixture_next = {}
 fixtures_dict = {}
@@ -219,6 +221,7 @@ logo_dict = {}
 logo_last_dict = {}
 players_lst = []
 photo_lst = []
+goals_for = response_team_stats['response']
 logo_count = 0
 logo_last_count = 0
 fix_count = 0
@@ -675,6 +678,7 @@ with tab2:
 			padding: 20px;
 			border-radius: 10px;
 			margin: 10px 0;
+			text-align: center;
 		}
 		</style>
 		""", unsafe_allow_html=True
@@ -690,6 +694,7 @@ with tab2:
 		st.markdown(
 			f"""
 					<div class="custom-container">
+					
 					<h1>Last Fixture</h1>
 						<h1 style="text-align: center;"><img src="{logo}" style="float:left">{goals_for} - 
 						{goals_against}<img src="{list(logo_last_dict.values())[-1]}" style="float:right"></h1>
@@ -712,15 +717,14 @@ with tab2:
 					""", unsafe_allow_html=True
 		)
 
-	col3, col4, col5 = st.columns([1, 1, 1])
+	col3, col4, col5 = st.columns([0.5, 1, 1])
 
 	with col3:
 		st.markdown(
 			f"""
 							<div class="custom-container">
 								<h1>Current Rank</h1>
-								<h1>
-								</h1>
+								<h2 style="font-size: 700%;">{standings_dict[int(fixture_year)]}</h2>
 							</div>
 							""", unsafe_allow_html=True
 		)
@@ -729,9 +733,9 @@ with tab2:
 		st.markdown(
 			f"""
 							<div class="custom-container">
-								<h1>Goals for, against, and gd</h1>
-								<h1>
-								</h1>
+								<h1>Home Goals</h1>
+								<h1>For: {response_team_stats['response']['biggest']['goals']['for']['home']}</h1>
+								<h1>Against: {response_team_stats['response']['biggest']['goals']['against']['home']}</h1>
 							</div>
 							""", unsafe_allow_html=True
 		)
@@ -740,9 +744,9 @@ with tab2:
 		st.markdown(
 			f"""
 									<div class="custom-container">
-										<h1>Bar Chart Striker Goals</h1>
-										<h1>
-										</h1>
+										<h1>Away Goals</h1>
+										<h1>For: {response_team_stats['response']['biggest']['goals']['for']['away']}</h1>
+										<h1>Against: {response_team_stats['response']['biggest']['goals']['against']['away']}</h1>
 									</div>
 									""", unsafe_allow_html=True
 		)
@@ -764,7 +768,11 @@ with tab2:
 		except KeyError:
 			ic('Key Error')
 		plt.plot(years, rank, marker='o')
+		progress_bar = st.progress(0)
+		total_iter = len(years)
 		for i in range(len(years)):
+			percent_complete = int((i + 1) / total_iter * 100)
+			progress_bar.progress(percent_complete)
 			plt.text(years[i], rank[i], str(rank[i]), fontsize=12, va='bottom', ha='left', wrap=True, color='red')
 		plt.yticks(range(int(min(rank)), int(max(rank)) + 1))
 		plt.gca().invert_yaxis()
