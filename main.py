@@ -926,7 +926,7 @@ with tab2:
 		st.image(rounded_image)
 		plt.close()
 
-	col7, col8, col9 = st.columns([1, 1, 1])
+	col7, col8 = st.columns([1, 2])
 
 	with col7:
 		goals_for_hme = {}
@@ -970,6 +970,32 @@ with tab2:
 		plt.savefig('data/plot_goals.png')
 		plt_rank_time = 'data/plot_goals.png'
 		image = Image.open(plt_rank_time)
+		radius = 20
+		rounded_image = add_rounded_corners(image, radius)
+		st.image(rounded_image)
+		plt.close()
+
+	with col8:
+		try:
+			plt.style.use('grayscale')
+		except KeyError:
+			ic('Key Error')
+		top_scorers_min = min(top_scorers.values())
+		top_scorers_max = max(top_scorers.values())
+		top_scorers_lst = list(top_scorers.values())
+		top_scorers_sorted = {}
+		for k, v in top_scorers.copy():
+			top_scorers_sorted[v] = k
+		top_scorers_sorted = dict(sorted(top_scorers_sorted.items()))
+		top_scorers_name_lst = list(top_scorers_sorted.values())
+		x = range(5)
+
+		plt.bar(x, top_scorers_lst)
+		plt.xticks(x, top_scorers_sorted[0:4], rotation=45)
+		plt.title(f'{team} Top Scorers 2023')
+		plt.savefig('data/bar_scorers.png')
+		plt_away_time = 'data/bar_scorers.png'
+		image = Image.open(plt_away_time)
 		radius = 20
 		rounded_image = add_rounded_corners(image, radius)
 		st.image(rounded_image)
