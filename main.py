@@ -97,7 +97,6 @@ response_players = response_players.json()
 standings_dict = {}
 
 tmp_lst = []
-ic(response_team_stats)
 
 url_epl = f"https://en.wikipedia.org/wiki/English Premier League"
 response_epl = requests.get(url_epl)
@@ -158,8 +157,6 @@ def make_dict(replaced_stand):
 	global season
 	for place in replaced_stand['response']:
 		if 'Premier League' not in place['league']['name']:
-			ic('RELEGATED')
-			ic(replaced_stand['parameters']['season'])
 			standings_name = place['league']['name']
 			return standings_name
 			continue
@@ -228,31 +225,6 @@ fix_count = 0
 index = 0
 logo = response_team_stats['response']['team']['logo']
 
-# for i in range(367):
-# 	for k, v in response_fix['response'][i].items():
-# 		if 'goals' in k:
-# 			if 'None' in str(v['away']):
-# 				for t, i in response_fix['response'][i].items():
-# 					if 'teams' in t:
-# 						if team_name in i['away']['name'] or team_name in i['home']['name']:
-# 							if team_name in i['away']['name']:
-# 								logo_dict[logo_count] = i['away']['logo']
-# 								logo_count += 1
-# 							else:
-# 								logo_dict[logo_count] = i['home']['logo']
-# 								logo_count += 1
-# 						else:
-# 							continue
-# 			else:
-# 				for first, last in response_fix['response'][i].items():
-# 					if 'teams' in first:
-# 						if team_name in last['away']['name'] or team_name in last['home']['name']:
-# 							if team_name in last['away']['name']:
-# 								logo_last_dict[logo_count] = last['home']['logo']
-# 								logo_count += 1
-# 							else:
-# 								logo_last_dict[logo_count] = last['away']['logo']
-# 								logo_count += 1
 
 for i in range(367):
 	for k, v in response_fix['response'][i].items():
@@ -289,25 +261,6 @@ for i in range(367):
 									else:
 										goals_for = str(v['fulltime']['home'])
 										goals_against = str(v['fulltime']['away'])
-
-				# for k, v in response_fix['response'][i].items():
-				# 	if 'score' in k:
-				# 		for t, i in response_fix['response'][i].items():
-				# 			if 'teams' in t:
-				# 				ic('teams')
-				# 				if team_name in i['away']['name'] or team_name in i['home']['name']:
-				# 					ic('Team Name', team_name)
-				# 					if team_name in i['away']['name']:
-				# 						ic('None')
-				# 						if 'None' in k['score']['fulltime']['away']:
-				# 							goals_for = '0'
-				# 							goals_against = '0'
-				# 					else:
-				# 						goals_for = str(v['fulltime']['away'])
-				# 						goals_against = str(v['fulltime']['home'])
-				# 				else:
-				# 					goals_for = str(v['fulltime']['home'])
-				# 					goals_against = str(v['fulltime']['away'])
 
 				logo_last_count += 1
 				continue
@@ -843,30 +796,38 @@ with tab2:
 		legend_home = ['Win', 'Draw', 'Lose']
 		legend_away = ['Win', 'Draw', 'Lose']
 		standings_lst = list(standings_dict.keys())
+		total_iter = 15
+		fixture_year_counter = 2010
+		for i in range(total_iter):
+			percent_complete = int((i + 1) / total_iter * 100)
+			progress_bar.progress(percent_complete)
+			query_team_stats_goals = {"league": "39", "season": fixture_year_counter, "team": {team_id}}
+			response_standings = requests.get(url_team_stats, headers=headers, params=query_team_stats_goals)
+			response_standings = response_standings.json()
 
-		for v in response_standings['response']:
-			ic('first')
-			if 'Premier League' in v['league']['name']:
-				ic('PL')
-				for a in response_standings['response']:
-					ic('a')
-					if 'standings' in a['league']:
-						ic('standings')
-						if 'None' in a:
-							a = '0'
-							home_win.append('0')
-							home_draw.append('0')
-							home_lose.append('0')
-						else:
-							home_win.append(a['league']['standings'][0][0]['home']['win'])
-							home_draw.append(a['league']['standings'][0][0]['home']['draw'])
-							home_lose.append(a['league']['standings'][0][0]['home']['lose'])
-			else:
-				continue
-
+			for k, v in response_standings['response'].items():
+				ic(k, v)
+				if 'league' in k:
+					if 'Premier League' in v['name']:
+						for a, b in response_standings['response'].items():
+							ic(a, b)
+							if 'fixtures' in a:
+								if 'None' in str(b['draws']['total']):
+									a = 0
+									home_win.append(a)
+									home_draw.append(a)
+									home_lose.append(a)
+									ic('None', a)
+								else:
+									home_win.append(b['draws']['total'])
+									home_draw.append(b['wins']['total'])
+									home_lose.append(b['loses']['total'])
+					else:
+						continue
+		ic(home_win, home_draw, home_lose)
 		hme_win_len, hme_draw_len, hme_lose_len = len(home_win), len(home_draw), len(home_lose)
 		total_results = sum(home_win) + sum(home_draw) + sum(home_lose)
-
+		ic(total_results)
 		hme_win_perc = (sum(home_win) / total_results) * 100
 		hme_draw_perc = (sum(home_draw) / total_results) * 100
 		hme_lose_perc = (sum(home_lose) / total_results) * 100
