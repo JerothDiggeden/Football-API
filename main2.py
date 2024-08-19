@@ -190,7 +190,7 @@ def add_rounded_corners(image, radius):
 
 season = 2010
 progress_bar = st.progress(0)
-total_iterations_stand = 15
+total_iterations_stand = 14
 for i in range(total_iterations_stand):
 	percent_complete = int((i + 1) / total_iterations_stand * 100)
 	progress_bar.progress(percent_complete)
@@ -290,27 +290,29 @@ for i in range(367):
 										goals_for = str(v['fulltime']['home'])
 										goals_against = str(v['fulltime']['away'])
 
-				# for k, v in response_fix['response'][i].items():
-				# 	if 'score' in k:
-				# 		for t, i in response_fix['response'][i].items():
-				# 			if 'teams' in t:
-				# 				ic('teams')
-				# 				if team_name in i['away']['name'] or team_name in i['home']['name']:
-				# 					ic('Team Name', team_name)
-				# 					if team_name in i['away']['name']:
-				# 						ic('None')
-				# 						if 'None' in k['score']['fulltime']['away']:
-				# 							goals_for = '0'
-				# 							goals_against = '0'
-				# 					else:
-				# 						goals_for = str(v['fulltime']['away'])
-				# 						goals_against = str(v['fulltime']['home'])
-				# 				else:
-				# 					goals_for = str(v['fulltime']['home'])
-				# 					goals_against = str(v['fulltime']['away'])
+				for k, v in response_fix['response'][i].items():
+					if 'score' in k:
+						for t, i in response_fix['response'][i].items():
+							if 'teams' in t:
+								ic('teams')
+								if team_name in i['away']['name'] or team_name in i['home']['name']:
+									ic('Team Name', team_name)
+									if team_name in i['away']['name']:
+										ic('None')
+										if 'None' in k['score']['fulltime']['away']:
+											goals_for = '0'
+											goals_against = '0'
+									else:
+										goals_for = str(v['fulltime']['away'])
+										goals_against = str(v['fulltime']['home'])
+								else:
+									goals_for = str(v['fulltime']['home'])
+									goals_against = str(v['fulltime']['away'])
 
 				logo_last_count += 1
 				continue
+
+ic(logo_last_dict)
 
 for i in range(367):
 	for k, v in response_fix['response'][i - 1].items():
@@ -738,8 +740,8 @@ with tab2:
 			f"""
 					<div class="custom-container">
 					<h1>Last Fixture</h1>
-						<h1 style="text-align: center;"><img src="{logo}" style="float:left">{goals_for} - 
-						{goals_against}<img src="{list(logo_last_dict.values())[-1]}" style="float:right"></h1>
+						<h1 style="text-align: center;"><img src="{logo}" style="float:left">{goals_against} - 
+						{goals_for}<img src="{list(logo_last_dict.values())[-1]}" style="float:right"></h1>
 						<h1>
 						</h1>
 					</div>
@@ -845,24 +847,12 @@ with tab2:
 		standings_lst = list(standings_dict.keys())
 
 		for v in response_standings['response']:
-			ic('first')
 			if 'Premier League' in v['league']['name']:
-				ic('PL')
 				for a in response_standings['response']:
-					ic('a')
 					if 'standings' in a['league']:
-						ic('standings')
-						if 'None' in a:
-							a = '0'
-							home_win.append('0')
-							home_draw.append('0')
-							home_lose.append('0')
-						else:
-							home_win.append(a['league']['standings'][0][0]['home']['win'])
-							home_draw.append(a['league']['standings'][0][0]['home']['draw'])
-							home_lose.append(a['league']['standings'][0][0]['home']['lose'])
-			else:
-				continue
+						home_win.append(a['league']['standings'][0][0]['home']['win'])
+						home_draw.append(a['league']['standings'][0][0]['home']['draw'])
+						home_lose.append(a['league']['standings'][0][0]['home']['lose'])
 
 		hme_win_len, hme_draw_len, hme_lose_len = len(home_win), len(home_draw), len(home_lose)
 		total_results = sum(home_win) + sum(home_draw) + sum(home_lose)
