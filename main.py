@@ -798,6 +798,7 @@ with tab2:
 		standings_lst = list(standings_dict.keys())
 		total_iter = 15
 		fixture_year_counter = 2010
+		progress_bar = st.progress(0)
 		for i in range(total_iter):
 			percent_complete = int((i + 1) / total_iter * 100)
 			progress_bar.progress(percent_complete)
@@ -806,11 +807,9 @@ with tab2:
 			response_standings = response_standings.json()
 
 			for k, v in response_standings['response'].items():
-				ic(k, v)
 				if 'league' in k:
 					if 'Premier League' in v['name']:
 						for a, b in response_standings['response'].items():
-							ic(a, b)
 							if 'fixtures' in a:
 								if 'None' in str(b['draws']['total']):
 									a = 0
@@ -819,15 +818,13 @@ with tab2:
 									home_lose.append(a)
 									ic('None', a)
 								else:
-									home_win.append(b['draws']['total'])
-									home_draw.append(b['wins']['total'])
-									home_lose.append(b['loses']['total'])
+									home_win.append(b['draws']['home'])
+									home_draw.append(b['wins']['home'])
+									home_lose.append(b['loses']['home'])
 					else:
 						continue
-		ic(home_win, home_draw, home_lose)
 		hme_win_len, hme_draw_len, hme_lose_len = len(home_win), len(home_draw), len(home_lose)
 		total_results = sum(home_win) + sum(home_draw) + sum(home_lose)
-		ic(total_results)
 		hme_win_perc = (sum(home_win) / total_results) * 100
 		hme_draw_perc = (sum(home_draw) / total_results) * 100
 		hme_lose_perc = (sum(home_lose) / total_results) * 100
@@ -855,13 +852,35 @@ with tab2:
 			plt.style.use('grayscale')
 		except KeyError:
 			ic('Key Error')
-		for v in response_standings['response']:
-			if 'Premier League' in v['league']['name']:
-				for a in response_standings['response']:
-					if 'standings' in a['league']:
-						away_win.append(a['league']['standings'][0][0]['away']['win'])
-						away_draw.append(a['league']['standings'][0][0]['away']['draw'])
-						away_lose.append(a['league']['standings'][0][0]['away']['lose'])
+
+		total_iter = 15
+		fixture_year_counter = 2010
+		progress_bar = st.progress(0)
+		for i in range(total_iter):
+			percent_complete = int((i + 1) / total_iter * 100)
+			progress_bar.progress(percent_complete)
+			query_team_stats_goals = {"league": "39", "season": fixture_year_counter, "team": {team_id}}
+			response_standings = requests.get(url_team_stats, headers=headers, params=query_team_stats_goals)
+			response_standings = response_standings.json()
+
+			for k, v in response_standings['response'].items():
+				if 'league' in k:
+					if 'Premier League' in v['name']:
+						for a, b in response_standings['response'].items():
+							if 'fixtures' in a:
+								ic(a, b)
+								if 'None' in str(b['draws']['total']):
+									a = 0
+									away_win.append(a)
+									away_draw.append(a)
+									away_lose.append(a)
+									ic('None', a)
+								else:
+									away_win.append(b['draws']['away'])
+									away_draw.append(b['wins']['away'])
+									away_lose.append(b['loses']['away'])
+					else:
+						continue
 
 		away_win_len, away_draw_len, away_lose_len = len(away_win), len(away_draw), len(away_lose)
 		total_results = sum(away_win) + sum(away_draw) + sum(away_lose)
