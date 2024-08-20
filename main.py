@@ -988,37 +988,26 @@ with tab2:
 		top_scorers_max = max(top_scorers.values())
 		top_scorers_lst = list(top_scorers.values())
 
-		ic(top_scorers)
-
-		top_scorers_sorted = dict(sorted(top_scorers.items(), key=lambda item: item[1], reverse=True))
-
-		ic(top_scorers_sorted)
-
 		top_scorers_sorted_dict = {}
+		top_scorers_name_lst = []
 		top_scorers_score_lst = []
 
-		for k, v in top_scorers_sorted.copy().items():
+		for k, v in top_scorers.copy().items():
 			top_scorers_sorted_dict[v] = k
-			top_scorers_score_lst.append(k)
+			top_scorers_name_lst.append(k)
+			top_scorers_score_lst.append(v)
 
-		ic(top_scorers_sorted_dict)
-		ic(top_scorers_score_lst)
-		# top_scorers_sorted = sorted(top_scorers_sorted)
-
-		top_scorers_name_lst = list(top_scorers_sorted.values())
+		# top_scorers_name_lst = list(top_scorers_sorted.values())
 		top_scorers_name_lst = top_scorers_name_lst[0:7]
 		top_scorers_score_lst = top_scorers_score_lst[0:7]
 
 		x = range(7)
 
-		top_scorers_lst = top_scorers_lst[0:7]
-
 		ic(top_scorers_name_lst)
 		ic(top_scorers_score_lst)
 
-		plt.bar(x, top_scorers_name_lst)
-		plt.xticks(x, top_scorers_score_lst, rotation=45)
-		# plt.yticks(top_scorers_score_lst)
+		plt.bar(top_scorers_name_lst, top_scorers_score_lst)
+		plt.xticks(top_scorers_name_lst, rotation=45)
 		plt.title(f'{team} Top Scorers 2023')
 		plt.savefig('data/bar_scorers.png')
 		plt_away_time = 'data/bar_scorers.png'
