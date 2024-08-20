@@ -1014,7 +1014,7 @@ with tab2:
 		ic(top_scorers_score_lst)
 
 		plt.figure(figsize=(7, 5))
-		plt.subplots_adjust(top=1, bottom=0.15)
+		plt.subplots_adjust(top=0.85, bottom=0.15)
 		plt.bar(top_scorers_name_lst, top_scorers_score_lst)
 		plt.xticks(top_scorers_name_lst, rotation=45)
 		plt.title(f'{team} Top Scorers 2023')
