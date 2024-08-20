@@ -4,6 +4,7 @@ import streamlit as st
 import matplotlib.pyplot as plt
 from PIL import Image, ImageDraw, ImageOps
 from bs4 import BeautifulSoup
+from collections import OrderedDict
 
 
 
@@ -666,6 +667,7 @@ with tab1:
 			""", unsafe_allow_html=True
 		)
 
+try:
 	with col26:
 		st.markdown(
 			f"""
@@ -676,6 +678,8 @@ with tab1:
 			</div>
 			""", unsafe_allow_html=True
 		)
+except IndexError:
+	ic('Index Error')
 
 
 with tab2:
@@ -812,66 +816,66 @@ with tab2:
 			plt.style.use('grayscale')
 		except KeyError:
 			ic('Key Error')
-		home_win = []
-		home_draw = []
-		home_lose = []
-		away_win = []
-		away_draw = []
-		away_lose = []
-		results_home = []
-		results_away = []
-		legend_home = ['Win', 'Draw', 'Lose']
-		legend_away = ['Win', 'Draw', 'Lose']
-		standings_lst = list(standings_dict.keys())
-		total_iter = 15
-		fixture_year_counter = 2010
-		progress_bar = st.progress(0)
-		for i in range(total_iter):
-			percent_complete = int((i + 1) / total_iter * 100)
-			progress_bar.progress(percent_complete)
-			query_team_stats_goals = {"league": "39", "season": fixture_year_counter, "team": {team_id}}
-			response_standings = requests.get(url_team_stats, headers=headers, params=query_team_stats_goals)
-			response_standings = response_standings.json()
-
-			for k, v in response_standings['response'].items():
-				if 'league' in k:
-					if 'Premier League' in v['name']:
-						for a, b in response_standings['response'].items():
-							if 'fixtures' in a:
-								if 'None' in str(b['draws']['total']):
-									a = 0
-									home_win.append(a)
-									home_draw.append(a)
-									home_lose.append(a)
-								else:
-									home_win.append(b['draws']['home'])
-									home_draw.append(b['wins']['home'])
-									home_lose.append(b['loses']['home'])
-					else:
-						continue
-		hme_win_len, hme_draw_len, hme_lose_len = len(home_win), len(home_draw), len(home_lose)
-		total_results = sum(home_win) + sum(home_draw) + sum(home_lose)
-		hme_win_perc = (sum(home_win) / total_results) * 100
-		hme_draw_perc = (sum(home_draw) / total_results) * 100
-		hme_lose_perc = (sum(home_lose) / total_results) * 100
-		results_home.append(hme_win_perc)
-		results_home.append(hme_draw_perc)
-		results_home.append(hme_lose_perc)
-
-		plt.pie(results_home, textprops={'color': 'white', 'fontsize': 14}, autopct='%1.1f%%', startangle=140, colors=colours)
-		plt.legend(legend_home, loc='best')
-		plt.xlabel('')
-		plt.ylabel('')
-		plt.title(f'{team} Home Results {standings_lst[0]} - {standings_lst[len(standings_lst) - 1]}')
-		plt.savefig('data/plot_home_results.png')
-		plt_home_time = 'data/plot_home_results.png'
-		image = Image.open(plt_home_time)
-		# Add rounded corners to the image
-		radius = 20  # Adjust the radius for the corners
-		rounded_image = add_rounded_corners(image, radius)
-		# Display the image with rounded corners using Matplotlib
-		st.image(rounded_image)
-		plt.close()
+		# home_win = []
+		# home_draw = []
+		# home_lose = []
+		# away_win = []
+		# away_draw = []
+		# away_lose = []
+		# results_home = []
+		# results_away = []
+		# legend_home = ['Win', 'Draw', 'Lose']
+		# legend_away = ['Win', 'Draw', 'Lose']
+		# standings_lst = list(standings_dict.keys())
+		# total_iter = 15
+		# fixture_year_counter = 2010
+		# progress_bar = st.progress(0)
+		# for i in range(total_iter):
+		# 	percent_complete = int((i + 1) / total_iter * 100)
+		# 	progress_bar.progress(percent_complete)
+		# 	query_team_stats_goals = {"league": "39", "season": fixture_year_counter, "team": {team_id}}
+		# 	response_standings = requests.get(url_team_stats, headers=headers, params=query_team_stats_goals)
+		# 	response_standings = response_standings.json()
+		#
+		# 	for k, v in response_standings['response'].items():
+		# 		if 'league' in k:
+		# 			if 'Premier League' in v['name']:
+		# 				for a, b in response_standings['response'].items():
+		# 					if 'fixtures' in a:
+		# 						if 'None' in str(b['draws']['total']):
+		# 							a = 0
+		# 							home_win.append(a)
+		# 							home_draw.append(a)
+		# 							home_lose.append(a)
+		# 						else:
+		# 							home_win.append(b['draws']['home'])
+		# 							home_draw.append(b['wins']['home'])
+		# 							home_lose.append(b['loses']['home'])
+		# 			else:
+		# 				continue
+		# hme_win_len, hme_draw_len, hme_lose_len = len(home_win), len(home_draw), len(home_lose)
+		# total_results = sum(home_win) + sum(home_draw) + sum(home_lose)
+		# hme_win_perc = (sum(home_win) / total_results) * 100
+		# hme_draw_perc = (sum(home_draw) / total_results) * 100
+		# hme_lose_perc = (sum(home_lose) / total_results) * 100
+		# results_home.append(hme_win_perc)
+		# results_home.append(hme_draw_perc)
+		# results_home.append(hme_lose_perc)
+		#
+		# plt.pie(results_home, textprops={'color': 'white', 'fontsize': 14}, autopct='%1.1f%%', startangle=140, colors=colours)
+		# plt.legend(legend_home, loc='best')
+		# plt.xlabel('')
+		# plt.ylabel('')
+		# plt.title(f'{team} Home Results {standings_lst[0]} - {standings_lst[len(standings_lst) - 1]}')
+		# plt.savefig('data/plot_home_results.png')
+		# plt_home_time = 'data/plot_home_results.png'
+		# image = Image.open(plt_home_time)
+		# # Add rounded corners to the image
+		# radius = 20  # Adjust the radius for the corners
+		# rounded_image = add_rounded_corners(image, radius)
+		# # Display the image with rounded corners using Matplotlib
+		# st.image(rounded_image)
+		# plt.close()
 
 	with col8:
 		try:
@@ -879,101 +883,101 @@ with tab2:
 		except KeyError:
 			ic('Key Error')
 
-		total_iter = 15
-		fixture_year_counter = 2010
-		progress_bar = st.progress(0)
-		for i in range(total_iter):
-			percent_complete = int((i + 1) / total_iter * 100)
-			progress_bar.progress(percent_complete)
-			query_team_stats_goals = {"league": "39", "season": fixture_year_counter, "team": {team_id}}
-			response_standings = requests.get(url_team_stats, headers=headers, params=query_team_stats_goals)
-			response_standings = response_standings.json()
-
-			for k, v in response_standings['response'].items():
-				if 'league' in k:
-					if 'Premier League' in v['name']:
-						for a, b in response_standings['response'].items():
-							if 'fixtures' in a:
-								if 'None' in str(b['draws']['total']):
-									a = 0
-									away_win.append(a)
-									away_draw.append(a)
-									away_lose.append(a)
-								else:
-									away_win.append(b['draws']['away'])
-									away_draw.append(b['wins']['away'])
-									away_lose.append(b['loses']['away'])
-					else:
-						continue
-
-		away_win_len, away_draw_len, away_lose_len = len(away_win), len(away_draw), len(away_lose)
-		total_results = sum(away_win) + sum(away_draw) + sum(away_lose)
-		away_win_perc = (sum(away_win) / total_results) * 100
-		away_draw_perc = (sum(away_draw) / total_results) * 100
-		away_lose_perc = (sum(away_lose) / total_results) * 100
-		results_away.append(away_win_perc)
-		results_away.append(away_draw_perc)
-		results_away.append(away_lose_perc)
-
-		plt.pie(results_away, textprops={'color': 'white', 'fontsize': 14}, autopct='%1.1f%%', startangle=140, colors=colours)
-		plt.legend(legend_away, loc='best')
-		plt.title(f'{team} Away Results {standings_lst[0]} - {standings_lst[len(standings_lst) - 1]}')
-		plt.savefig('data/plot_away_results.png')
-		plt_away_time = 'data/plot_away_results.png'
-		image = Image.open(plt_away_time)
-		radius = 20
-		rounded_image = add_rounded_corners(image, radius)
-		st.image(rounded_image)
-		plt.close()
+		# total_iter = 15
+		# fixture_year_counter = 2010
+		# progress_bar = st.progress(0)
+		# for i in range(total_iter):
+		# 	percent_complete = int((i + 1) / total_iter * 100)
+		# 	progress_bar.progress(percent_complete)
+		# 	query_team_stats_goals = {"league": "39", "season": fixture_year_counter, "team": {team_id}}
+		# 	response_standings = requests.get(url_team_stats, headers=headers, params=query_team_stats_goals)
+		# 	response_standings = response_standings.json()
+		#
+		# 	for k, v in response_standings['response'].items():
+		# 		if 'league' in k:
+		# 			if 'Premier League' in v['name']:
+		# 				for a, b in response_standings['response'].items():
+		# 					if 'fixtures' in a:
+		# 						if 'None' in str(b['draws']['total']):
+		# 							a = 0
+		# 							away_win.append(a)
+		# 							away_draw.append(a)
+		# 							away_lose.append(a)
+		# 						else:
+		# 							away_win.append(b['draws']['away'])
+		# 							away_draw.append(b['wins']['away'])
+		# 							away_lose.append(b['loses']['away'])
+		# 			else:
+		# 				continue
+		#
+		# away_win_len, away_draw_len, away_lose_len = len(away_win), len(away_draw), len(away_lose)
+		# total_results = sum(away_win) + sum(away_draw) + sum(away_lose)
+		# away_win_perc = (sum(away_win) / total_results) * 100
+		# away_draw_perc = (sum(away_draw) / total_results) * 100
+		# away_lose_perc = (sum(away_lose) / total_results) * 100
+		# results_away.append(away_win_perc)
+		# results_away.append(away_draw_perc)
+		# results_away.append(away_lose_perc)
+		#
+		# plt.pie(results_away, textprops={'color': 'white', 'fontsize': 14}, autopct='%1.1f%%', startangle=140, colors=colours)
+		# plt.legend(legend_away, loc='best')
+		# plt.title(f'{team} Away Results {standings_lst[0]} - {standings_lst[len(standings_lst) - 1]}')
+		# plt.savefig('data/plot_away_results.png')
+		# plt_away_time = 'data/plot_away_results.png'
+		# image = Image.open(plt_away_time)
+		# radius = 20
+		# rounded_image = add_rounded_corners(image, radius)
+		# st.image(rounded_image)
+		# plt.close()
 
 	col7, col8 = st.columns([1, 2])
 
 	with col7:
 		goals_for_hme = {}
 		goals_for_awa = {}
-		fixture_year_counter = 2010
-		progress_bar = st.progress(0)
-		total_iterations = 15
-		for i in range(total_iterations):
-			percent_complete = int((i + 1) / total_iterations * 100)
-			progress_bar.progress(percent_complete)
-			query_team_stats_goals = {"league": "39", "season": fixture_year_counter, "team": {team_id}}
-			response_team_stats_goals = requests.get(url_team_stats, headers=headers, params=query_team_stats_goals)
-			response_team_stats_goals = response_team_stats_goals.json()
-
-			for key, value in response_team_stats_goals.items():
-				if 'response' in key:
-					for key2, value2 in response_team_stats_goals.items():
-						if 'parameters' in key2:
-							value_goals_for = value['goals']['for']['total']['total']
-							value_goals_against = value['goals']['against']['total']['total']
-							goals_for_hme[fixture_year_counter] = value_goals_for
-							goals_for_awa[fixture_year_counter] = value_goals_against
-							fixture_year_counter += 1
-				else:
-					continue
-		dates = list(goals_for_hme.keys())
-		goals_for_hme_lst = list(goals_for_hme.values())
-		goals_for_awa_lst = list(goals_for_awa.values())
-		try:
-			plt.style.use('grayscale')
-		except KeyError:
-			ic('Key Error')
-		plt.plot(dates, goals_for_hme_lst, marker='o')
-		plt.plot(dates, goals_for_awa_lst, marker='o')
-		plt.legend(['Home', 'Away'], loc='best')
-		# plt.yticks(range(int(min(goals_for_hme_lst)), int(max(goals_for_hme_lst)) + 1))
-		plt.yticks(range(int(min(goals_for_awa_lst)), int(max(goals_for_hme_lst)), 10))
-		plt.xlabel('Years')
-		plt.ylabel('Goals')
-		plt.title(f'{team} Goals {dates[0]} - {dates[-1]}')
-		plt.savefig('data/plot_goals.png')
-		plt_rank_time = 'data/plot_goals.png'
-		image = Image.open(plt_rank_time)
-		radius = 20
-		rounded_image = add_rounded_corners(image, radius)
-		st.image(rounded_image)
-		plt.close()
+		# fixture_year_counter = 2010
+		# progress_bar = st.progress(0)
+		# total_iterations = 15
+		# for i in range(total_iterations):
+		# 	percent_complete = int((i + 1) / total_iterations * 100)
+		# 	progress_bar.progress(percent_complete)
+		# 	query_team_stats_goals = {"league": "39", "season": fixture_year_counter, "team": {team_id}}
+		# 	response_team_stats_goals = requests.get(url_team_stats, headers=headers, params=query_team_stats_goals)
+		# 	response_team_stats_goals = response_team_stats_goals.json()
+		#
+		# 	for key, value in response_team_stats_goals.items():
+		# 		if 'response' in key:
+		# 			for key2, value2 in response_team_stats_goals.items():
+		# 				if 'parameters' in key2:
+		# 					value_goals_for = value['goals']['for']['total']['total']
+		# 					value_goals_against = value['goals']['against']['total']['total']
+		# 					goals_for_hme[fixture_year_counter] = value_goals_for
+		# 					goals_for_awa[fixture_year_counter] = value_goals_against
+		# 					fixture_year_counter += 1
+		# 		else:
+		# 			continue
+		# dates = list(goals_for_hme.keys())
+		# goals_for_hme_lst = list(goals_for_hme.values())
+		# goals_for_awa_lst = list(goals_for_awa.values())
+		# try:
+		# 	plt.style.use('grayscale')
+		# except KeyError:
+		# 	ic('Key Error')
+		# plt.plot(dates, goals_for_hme_lst, marker='o')
+		# plt.plot(dates, goals_for_awa_lst, marker='o')
+		# plt.legend(['Home', 'Away'], loc='best')
+		# # plt.yticks(range(int(min(goals_for_hme_lst)), int(max(goals_for_hme_lst)) + 1))
+		# plt.yticks(range(int(min(goals_for_awa_lst)), int(max(goals_for_hme_lst)), 10))
+		# plt.xlabel('Years')
+		# plt.ylabel('Goals')
+		# plt.title(f'{team} Goals {dates[0]} - {dates[-1]}')
+		# plt.savefig('data/plot_goals.png')
+		# plt_rank_time = 'data/plot_goals.png'
+		# image = Image.open(plt_rank_time)
+		# radius = 20
+		# rounded_image = add_rounded_corners(image, radius)
+		# st.image(rounded_image)
+		# plt.close()
 
 	with col8:
 		try:
@@ -983,15 +987,38 @@ with tab2:
 		top_scorers_min = min(top_scorers.values())
 		top_scorers_max = max(top_scorers.values())
 		top_scorers_lst = list(top_scorers.values())
-		top_scorers_sorted = {}
 
-		top_scorers_sorted = dict(sorted(top_scorers_sorted.items()))
+		ic(top_scorers)
+
+		top_scorers_sorted = dict(sorted(top_scorers.items(), key=lambda item: item[1], reverse=True))
+
+		ic(top_scorers_sorted)
+
+		top_scorers_sorted_dict = {}
+		top_scorers_score_lst = []
+
+		for k, v in top_scorers_sorted.copy().items():
+			top_scorers_sorted_dict[v] = k
+			top_scorers_score_lst.append(k)
+
+		ic(top_scorers_sorted_dict)
+		ic(top_scorers_score_lst)
+		# top_scorers_sorted = sorted(top_scorers_sorted)
+
 		top_scorers_name_lst = list(top_scorers_sorted.values())
-		x = range(5)
-		top_scorers_sorted = top_scorers_sorted[:4]
+		top_scorers_name_lst = top_scorers_name_lst[0:7]
+		top_scorers_score_lst = top_scorers_score_lst[0:7]
 
-		plt.bar(x, top_scorers_lst)
-		plt.xticks(x, top_scorers_sorted, rotation=45)
+		x = range(7)
+
+		top_scorers_lst = top_scorers_lst[0:7]
+
+		ic(top_scorers_name_lst)
+		ic(top_scorers_score_lst)
+
+		plt.bar(x, top_scorers_name_lst)
+		plt.xticks(x, top_scorers_score_lst, rotation=45)
+		# plt.yticks(top_scorers_score_lst)
 		plt.title(f'{team} Top Scorers 2023')
 		plt.savefig('data/bar_scorers.png')
 		plt_away_time = 'data/bar_scorers.png'
