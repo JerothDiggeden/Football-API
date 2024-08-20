@@ -1017,7 +1017,7 @@ with tab2:
 		plt.subplots_adjust(top=0.85, bottom=0.15)
 		plt.bar(top_scorers_name_lst, top_scorers_score_lst)
 		plt.xticks(top_scorers_name_lst, rotation=45)
-		plt.title(f'{team} Top Scorers 2023')
+		plt.title('Top Scorers 2023')
 		plt.savefig('data/bar_scorers.png')
 		plt_away_time = 'data/bar_scorers.png'
 		image = Image.open(plt_away_time)
