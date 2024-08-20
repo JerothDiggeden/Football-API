@@ -828,12 +828,12 @@ with tab2:
 		legend_away = ['Win', 'Draw', 'Lose']
 		standings_lst = list(standings_dict.keys())
 		total_iter = 15
-		fixture_year_counter = 2009
+		fixture_year_counter = 2010
 		progress_bar = st.progress(0)
 		for i in range(total_iter):
 			percent_complete = int((i + 1) / total_iter * 100)
 			progress_bar.progress(percent_complete)
-			query_team_stats_goals = {"league": "39", "season": fixture_year_counter + 1, "team": {team_id}}
+			query_team_stats_goals = {"league": "39", "season": fixture_year_counter, "team": {team_id}}
 			response_standings = requests.get(url_team_stats, headers=headers, params=query_team_stats_goals)
 			response_standings = response_standings.json()
 
@@ -889,7 +889,7 @@ with tab2:
 		for i in range(total_iter):
 			percent_complete = int((i + 1) / total_iter * 100)
 			progress_bar.progress(percent_complete)
-			query_team_stats_goals = {"league": "39", "season": fixture_year_counter + 1, "team": {team_id}}
+			query_team_stats_goals = {"league": "39", "season": fixture_year_counter, "team": {team_id}}
 			response_standings = requests.get(url_team_stats, headers=headers, params=query_team_stats_goals)
 			response_standings = response_standings.json()
 
@@ -937,11 +937,11 @@ with tab2:
 		goals_for_awa = {}
 		fixture_year_counter = 2010
 		progress_bar = st.progress(0)
-		total_iterations = 14
+		total_iterations = 15
 		for i in range(total_iterations):
 			percent_complete = int((i + 1) / total_iterations * 100)
 			progress_bar.progress(percent_complete)
-			query_team_stats_goals = {"league": "39", "season": fixture_year_counter + 1, "team": {team_id}}
+			query_team_stats_goals = {"league": "39", "season": fixture_year_counter, "team": {team_id}}
 			response_team_stats_goals = requests.get(url_team_stats, headers=headers, params=query_team_stats_goals)
 			response_team_stats_goals = response_team_stats_goals.json()
 
@@ -1017,7 +1017,7 @@ with tab2:
 		plt.subplots_adjust(top=0.85, bottom=0.15)
 		plt.bar(top_scorers_name_lst, top_scorers_score_lst)
 		plt.xticks(top_scorers_name_lst, rotation=45)
-		plt.title('Top Scorers 2023')
+		plt.title(f'{team} Top Scorers 2023')
 		plt.savefig('data/bar_scorers.png')
 		plt_away_time = 'data/bar_scorers.png'
 		image = Image.open(plt_away_time)
