@@ -39,10 +39,11 @@ for id, value in team_id_dict.items():
 		for t_id in response_test['response']:
 			if id in str(t_id['team']['id']):
 				if 'team' in t_id:
-					if ('Ipswich' not in t_id['team']['name'] and 'Bournemouth' not in t_id['team']['name'] and 'Southampton' not in t_id['team']['name']
+					if (('Ipswich' not in t_id['team']['name'] and 'Bournemouth' not in t_id['team']['name'] and 'Southampton' not in t_id['team']['name']
 							and 'Leicester' not in t_id['team']['name'] and 'Chelsea' not in t_id['team']['name'] and 'Brighton' not in t_id['team']['name']
 							and 'Crystal Palace' not in t_id['team']['name'] and 'Brentford' not in t_id['team']['name'] and 'Nottingham Forest'
-							not in t_id['team']['name']) :
+							not in t_id['team']['name']) and 'Wolves' not in t_id['team']['name'] and 'Everton' not in t_id['team']['name'] and 'Manchester United'
+							not in t_id['team']['name']):
 						team_id_dict[id] = t_id['team']['name']
 					else:
 						continue
@@ -433,7 +434,6 @@ with tab1:
 			<div class="custom-container">
 				<h1><img src="{venue_img}" alt="{venue_name}" style="float:left;width:200px;height:160px">{venue_name}</h1>
 				<p>{par_1_stadium}</p>
-				<p>{par_2_stadium}</p>
 			</div>
 			""", unsafe_allow_html=True
 		)
@@ -449,7 +449,7 @@ with tab1:
 		)
 
 	st.header("Players")
-	col7, col8, col9, col10 = st.columns([1, 1, 1, 1])
+	col7, col8, col9 = st.columns([1, 1, 1])
 
 	with col7:
 		st.markdown(
@@ -485,6 +485,8 @@ with tab1:
 			""", unsafe_allow_html=True
 		)
 
+	col10, col11, col12 = st.columns([1, 1, 1])
+
 	with col10:
 		st.markdown(
 			f"""
@@ -495,8 +497,6 @@ with tab1:
 			</div>
 			""", unsafe_allow_html=True
 		)
-
-	col11, col12, col13, col14 = st.columns([1, 1, 1, 1])
 
 	with col11:
 		st.markdown(
@@ -521,6 +521,9 @@ with tab1:
 			""", unsafe_allow_html=True
 		)
 
+
+	col13, col14, col15 = st.columns([1, 1, 1])
+
 	with col13:
 		st.markdown(
 			f"""
@@ -543,9 +546,6 @@ with tab1:
 			""", unsafe_allow_html=True
 		)
 
-
-	col15, col16, col17, col18 = st.columns([1, 1, 1, 1])
-
 	with col15:
 		st.markdown(
 			f"""
@@ -557,6 +557,8 @@ with tab1:
 			""", unsafe_allow_html=True
 		)
 
+
+	col16, col17, col18 = st.columns([1, 1, 1])
 
 	with col16:
 		st.markdown(
@@ -591,8 +593,7 @@ with tab1:
 			""", unsafe_allow_html=True
 		)
 
-
-	col19, col20, col21, col22 = st.columns([1, 1, 1, 1])
+	col19, col20, col21 = st.columns([1, 1, 1])
 
 	with col19:
 		st.markdown(
@@ -628,64 +629,64 @@ with tab1:
 			""", unsafe_allow_html=True
 		)
 
+	col22, col23, col24 = st.columns([1, 1, 1])
+
 	with col22:
 		st.markdown(
 			f"""
-			<div class="custom-container">
-				<h1><img src="{players[players_lst[15]]}" alt="{players_lst[15]}" style="float:left;width:200px;height:160px">{players_lst[15]}</h1>
-				<h1>
-				</h1>
-			</div>
-			""", unsafe_allow_html=True
+				<div class="custom-container">
+					<h1><img src="{players[players_lst[15]]}" alt="{players_lst[15]}" style="float:left;width:200px;height:160px">{players_lst[15]}</h1>
+					<h1>
+					</h1>
+				</div>
+				""", unsafe_allow_html=True
 		)
-
-
-	col23, col24, col25, col26 = st.columns([1, 1, 1, 1])
 
 	with col23:
 		st.markdown(
 			f"""
-			<div class="custom-container">
-				<h1><img src="{players[players_lst[16]]}" alt="{players_lst[16]}" style="float:left;width:200px;height:160px">{players_lst[16]}</h1>
-				<h1>
-				</h1>
-			</div>
-			""", unsafe_allow_html=True
+				<div class="custom-container">
+					<h1><img src="{players[players_lst[16]]}" alt="{players_lst[16]}" style="float:left;width:200px;height:160px">{players_lst[16]}</h1>
+					<h1>
+					</h1>
+				</div>
+				""", unsafe_allow_html=True
 		)
-
 
 	with col24:
 		st.markdown(
 			f"""
-			<div class="custom-container">
-				<h1><img src="{players[players_lst[17]]}" alt="{players_lst[17]}" style="float:left;width:200px;height:160px">{players_lst[17]}</h1>
-				<h1>
-				</h1>
-			</div>
-			""", unsafe_allow_html=True
+				<div class="custom-container">
+					<h1><img src="{players[players_lst[17]]}" alt="{players_lst[17]}" style="float:left;width:200px;height:160px">{players_lst[17]}</h1>
+					<h1>
+					</h1>
+				</div>
+				""", unsafe_allow_html=True
 		)
+
+	col25, col26, col27 = st.columns([1, 1, 1])
 
 	with col25:
 		st.markdown(
 			f"""
-			<div class="custom-container">
-				<h1><img src="{players[players_lst[18]]}" alt="{players_lst[18]}" style="float:left;width:200px;height:160px">{players_lst[18]}</h1>
-				<h1>
-				</h1>
-			</div>
-			""", unsafe_allow_html=True
+				<div class="custom-container">
+					<h1><img src="{players[players_lst[18]]}" alt="{players_lst[18]}" style="float:left;width:200px;height:160px">{players_lst[18]}</h1>
+					<h1>
+					</h1>
+				</div>
+				""", unsafe_allow_html=True
 		)
 
 try:
 	with col26:
 		st.markdown(
 			f"""
-			<div class="custom-container">
-				<h1><img src="{players[players_lst[19]]}" alt="{players_lst[19]}" style="float:left;width:200px;height:160px">{players_lst[19]}</h1>
-				<h1>
-				</h1>
-			</div>
-			""", unsafe_allow_html=True
+				<div class="custom-container">
+					<h1><img src="{players[players_lst[19]]}" alt="{players_lst[19]}" style="float:left;width:200px;height:160px">{players_lst[19]}</h1>
+					<h1>
+					</h1>
+				</div>
+				""", unsafe_allow_html=True
 		)
 except IndexError:
 	ic('Index Error')
