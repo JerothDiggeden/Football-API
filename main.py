@@ -9,8 +9,8 @@ from collections import OrderedDict
 
 
 
-st.set_page_config(page_title="NUFC Web App", page_icon=":material/edit:", layout="wide",
-				   initial_sidebar_state="expanded")
+st.set_page_config(page_title="Premier League Web App", page_icon=":material/edit:", layout="wide",
+				   initial_sidebar_state="collapsed")
 
 fixture_year = '2024'
 
@@ -458,6 +458,8 @@ with tab1:
 				<h1><img src="{players[players_lst[0]]}" alt="{players_lst[0]}" style="float:left;width:200px;height:160px">{players_lst[0]}</h1>
 				<h1>
 				</h1>
+				<p>
+				</p>
 			</div>
 			""", unsafe_allow_html=True
 		)
@@ -470,6 +472,8 @@ with tab1:
 				<h1><img src="{players[players_lst[1]]}" alt="{players_lst[1]}" style="float:left;width:200px;height:160px">{players_lst[1]}</h1>
 				<h1>
 				</h1>
+				<p>
+				</p>
 			</div>
 			""", unsafe_allow_html=True
 		)
@@ -481,6 +485,8 @@ with tab1:
 				<h1><img src="{players[players_lst[2]]}" alt="{players_lst[2]}" style="float:left;width:200px;height:160px">{players_lst[2]}</h1>
 				<h1>
 				</h1>
+				<p>
+				</p>
 			</div>
 			""", unsafe_allow_html=True
 		)
@@ -494,6 +500,8 @@ with tab1:
 				<h1><img src="{players[players_lst[3]]}" alt="{players_lst[3]}" style="float:left;width:200px;height:160px">{players_lst[3]}</h1>
 				<h1>
 				</h1>
+				<p>
+				</p>
 			</div>
 			""", unsafe_allow_html=True
 		)
@@ -505,6 +513,8 @@ with tab1:
 				<h1><img src="{players[players_lst[4]]}" alt="{players_lst[4]}" style="float:left;width:200px;height:160px">{players_lst[4]}</h1>
 				<h1>
 				</h1>
+				<p>
+				</p>
 			</div>
 			""", unsafe_allow_html=True
 		)
@@ -517,6 +527,8 @@ with tab1:
 				<h1><img src="{players[players_lst[5]]}" alt="{players_lst[5]}" style="float:left;width:200px;height:160px">{players_lst[5]}</h1>
 				<h1>
 				</h1>
+				<p>
+				</p>
 			</div>
 			""", unsafe_allow_html=True
 		)
@@ -531,6 +543,8 @@ with tab1:
 				<h1><img src="{players[players_lst[6]]}" alt="{players_lst[6]}" style="float:left;width:200px;height:160px">{players_lst[6]}</h1>
 				<h1>
 				</h1>
+				<p>
+				</p>
 			</div>
 			""", unsafe_allow_html=True
 		)
@@ -542,6 +556,8 @@ with tab1:
 				<h1><img src="{players[players_lst[7]]}" alt="{players_lst[7]}" style="float:left;width:200px;height:160px">{players_lst[7]}</h1>
 				<h1>
 				</h1>
+				<p>
+				</p>
 			</div>
 			""", unsafe_allow_html=True
 		)
@@ -553,6 +569,8 @@ with tab1:
 				<h1><img src="{players[players_lst[8]]}" alt="{players_lst[8]}" style="float:left;width:200px;height:160px">{players_lst[8]}</h1>
 				<h1>
 				</h1>
+				<p>
+				</p>
 			</div>
 			""", unsafe_allow_html=True
 		)
@@ -567,6 +585,8 @@ with tab1:
 				<h1><img src="{players[players_lst[9]]}" alt="{players_lst[9]}" style="float:left;width:200px;height:160px">{players_lst[9]}</h1>
 				<h1>
 				</h1>
+				<p>
+				</p>
 			</div>
 			""", unsafe_allow_html=True
 		)
@@ -578,6 +598,8 @@ with tab1:
 				<h1><img src="{players[players_lst[10]]}" alt="{players_lst[10]}" style="float:left;width:200px;height:160px">{players_lst[10]}</h1>
 				<h1>
 				</h1>
+				<p>
+				</p>
 			</div>
 			""", unsafe_allow_html=True
 		)
@@ -589,6 +611,8 @@ with tab1:
 				<h1><img src="{players[players_lst[11]]}" alt="{players_lst[11]}" style="float:left;width:200px;height:160px">{players_lst[11]}</h1>
 				<h1>
 				</h1>
+				<p>
+				</p>
 			</div>
 			""", unsafe_allow_html=True
 		)
@@ -602,6 +626,8 @@ with tab1:
 				<h1><img src="{players[players_lst[12]]}" alt="{players_lst[12]}" style="float:left;width:200px;height:160px">{players_lst[12]}</h1>
 				<h1>
 				</h1>
+				<p>
+				</p>
 			</div>
 			""", unsafe_allow_html=True
 		)
@@ -614,6 +640,8 @@ with tab1:
 				<h1><img src="{players[players_lst[13]]}" alt="{players_lst[13]}" style="float:left;width:200px;height:160px">{players_lst[13]}</h1>
 				<h1>
 				</h1>
+				<p>
+				</p>
 			</div>
 			""", unsafe_allow_html=True
 		)
@@ -625,6 +653,8 @@ with tab1:
 				<h1><img src="{players[players_lst[14]]}" alt="{players_lst[14]}" style="float:left;width:200px;height:160px">{players_lst[14]}</h1>
 				<h1>
 				</h1>
+				<p>
+				</p>
 			</div>
 			""", unsafe_allow_html=True
 		)
@@ -638,6 +668,8 @@ with tab1:
 					<h1><img src="{players[players_lst[15]]}" alt="{players_lst[15]}" style="float:left;width:200px;height:160px">{players_lst[15]}</h1>
 					<h1>
 					</h1>
+					<p>
+					</p>
 				</div>
 				""", unsafe_allow_html=True
 		)
@@ -649,6 +681,8 @@ with tab1:
 					<h1><img src="{players[players_lst[16]]}" alt="{players_lst[16]}" style="float:left;width:200px;height:160px">{players_lst[16]}</h1>
 					<h1>
 					</h1>
+					<p>
+					</p>
 				</div>
 				""", unsafe_allow_html=True
 		)
@@ -660,6 +694,8 @@ with tab1:
 					<h1><img src="{players[players_lst[17]]}" alt="{players_lst[17]}" style="float:left;width:200px;height:160px">{players_lst[17]}</h1>
 					<h1>
 					</h1>
+					<p>
+					</p>
 				</div>
 				""", unsafe_allow_html=True
 		)
@@ -673,6 +709,8 @@ with tab1:
 					<h1><img src="{players[players_lst[18]]}" alt="{players_lst[18]}" style="float:left;width:200px;height:160px">{players_lst[18]}</h1>
 					<h1>
 					</h1>
+					<p>
+					</p>
 				</div>
 				""", unsafe_allow_html=True
 		)
@@ -685,6 +723,8 @@ try:
 					<h1><img src="{players[players_lst[19]]}" alt="{players_lst[19]}" style="float:left;width:200px;height:160px">{players_lst[19]}</h1>
 					<h1>
 					</h1>
+					<p>
+					</p>
 				</div>
 				""", unsafe_allow_html=True
 		)
@@ -756,43 +796,45 @@ with tab2:
 		try:
 			st.markdown(
 				f"""
-								<div class="custom-container">
-									<h1>Current Rank</h1>
-									<h2 style="font-size: 490%;">{standings_dict[int(fixture_year)]}</h2>
-								</div>
-								""", unsafe_allow_html=True
+					<div class="custom-container">
+						<h1>Current Rank</h1>
+						<h2 style="font-size: 676%;">{standings_dict[int(fixture_year)]}</h2>
+						<p>
+						</p>
+					</div>
+					""", unsafe_allow_html=True
 			)
 		except KeyError:
 			ic('Rank Key Error')
 			st.markdown(
 				f"""
-											<div class="custom-container">
-												<h1>Current Rank</h1>
-												<h2 style="font-size: 490%;">{standings_dict[int(fixture_year) - 2]}</h2>
-											</div>
-											""", unsafe_allow_html=True
+					<div class="custom-container">
+						<h1>Current Rank</h1>
+						<h2 style="font-size: 676%;">{standings_dict[int(fixture_year) - 2]}</h2>
+					</div>
+					""", unsafe_allow_html=True
 			)
 
 	with col4:
 		st.markdown(
 			f"""
-							<div class="custom-container">
-								<h1>Home Goals</h1>
-								<h1>For: {response_team_stats['response']['biggest']['goals']['for']['home']}</h1>
-								<h1>Against: {response_team_stats['response']['biggest']['goals']['against']['home']}</h1>
-							</div>
-							""", unsafe_allow_html=True
+					<div class="custom-container">
+						<h1>Home Goals</h1>
+						<h1>For: {response_team_stats['response']['biggest']['goals']['for']['home']}</h1>
+						<h1>Against: {response_team_stats['response']['biggest']['goals']['against']['home']}</h1>
+					</div>
+					""", unsafe_allow_html=True
 		)
 
 	with col5:
 		st.markdown(
 			f"""
-									<div class="custom-container">
-										<h1>Away Goals</h1>
-										<h1>For: {response_team_stats['response']['biggest']['goals']['for']['away']}</h1>
-										<h1>Against: {response_team_stats['response']['biggest']['goals']['against']['away']}</h1>
-									</div>
-									""", unsafe_allow_html=True
+					<div class="custom-container">
+						<h1>Away Goals</h1>
+						<h1>For: {response_team_stats['response']['biggest']['goals']['for']['away']}</h1>
+						<h1>Against: {response_team_stats['response']['biggest']['goals']['against']['away']}</h1>
+					</div>
+					""", unsafe_allow_html=True
 		)
 
 	st.header("Historical")
@@ -984,7 +1026,7 @@ with tab2:
 			plt.style.use('grayscale')
 		except KeyError:
 			ic('Key Error')
-		plt.figure(figsize=(7, 5))
+		plt.figure(figsize=(9, 5))
 		plt.plot(dates, goals_for_hme_lst, marker='o')
 		plt.plot(dates, goals_for_awa_lst, marker='o')
 		plt.legend(['Home', 'Away'], loc='best')
@@ -1034,7 +1076,7 @@ with tab2:
 		ic(top_scorers_name_lst)
 		ic(top_scorers_score_lst)
 
-		plt.figure(figsize=(7, 5))
+		plt.figure(figsize=(9, 5))
 		plt.subplots_adjust(top=0.85, bottom=0.15)
 		plt.bar(top_scorers_name_lst, top_scorers_score_lst)
 		plt.xticks(top_scorers_name_lst, rotation=45)
