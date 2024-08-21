@@ -39,7 +39,16 @@ for id, value in team_id_dict.items():
 		for t_id in response_test['response']:
 			if id in str(t_id['team']['id']):
 				if 'team' in t_id:
-					team_id_dict[id] = t_id['team']['name']
+					if ('Ipswich' not in t_id['team']['name'] and 'Bournemouth' not in t_id['team']['name'] and 'Southampton' not in t_id['team']['name']
+							and 'Leicester' not in t_id['team']['name'] and 'Chelsea' not in t_id['team']['name'] and 'Brighton' not in t_id['team']['name']
+							and 'Crystal Palace' not in t_id['team']['name'] and 'Brentford' not in t_id['team']['name'] and 'Nottingham Forest'
+							not in t_id['team']['name']) :
+						team_id_dict[id] = t_id['team']['name']
+					else:
+						continue
+
+for k, v in team_id_dict.items():
+	ic('')
 
 
 for k, v in team_id_dict.copy().items():
@@ -743,14 +752,25 @@ with tab2:
 	col3, col4, col5 = st.columns([0.5, 1, 1])
 
 	with col3:
-		st.markdown(
-			f"""
-							<div class="custom-container">
-								<h1>Current Rank</h1>
-								<h2 style="font-size: 490%;">{standings_dict[int(fixture_year)]}</h2>
-							</div>
-							""", unsafe_allow_html=True
-		)
+		try:
+			st.markdown(
+				f"""
+								<div class="custom-container">
+									<h1>Current Rank</h1>
+									<h2 style="font-size: 490%;">{standings_dict[int(fixture_year)]}</h2>
+								</div>
+								""", unsafe_allow_html=True
+			)
+		except KeyError:
+			ic('Rank Key Error')
+			st.markdown(
+				f"""
+											<div class="custom-container">
+												<h1>Current Rank</h1>
+												<h2 style="font-size: 490%;">{standings_dict[int(fixture_year) - 2]}</h2>
+											</div>
+											""", unsafe_allow_html=True
+			)
 
 	with col4:
 		st.markdown(
